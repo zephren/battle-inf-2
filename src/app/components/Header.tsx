@@ -15,6 +15,8 @@ class Header extends React.Component<Props, {}> {
     this.props.history.push(path);
   }
 
+  resetGame() {}
+
   render() {
     return (
       <div>
@@ -22,6 +24,7 @@ class Header extends React.Component<Props, {}> {
         <button onClick={this.click.bind(this, "/inventory")}>Inventory</button>
         <button onClick={this.click.bind(this, "/town")}>Town</button>
         <button onClick={this.click.bind(this, "/options")}>Options</button>
+        <button onClick={this.resetGame}>Options</button>
       </div>
     );
   }

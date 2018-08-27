@@ -55,6 +55,10 @@ const Topics = ({ match }: any) => (
 // 'HelloProps' describes the shape of props.
 // State is never set so we use the '{}' type.
 export class Main extends React.Component {
+  constructor(props: any) {
+    super(props);
+  }
+
   render() {
     return (
       <div>

@@ -1,15 +1,11 @@
 import * as React from "react";
+import Store from "../lib/store";
 
 import Hero from "./Hero";
-import IHero from "../interfaces/Hero";
 
 export default class Heroes extends React.Component {
   render() {
-    const heroes: IHero[] = [
-      { name: "Hero A" },
-      { name: "Hero B" },
-      { name: "Hero C" }
-    ];
+    const heroes = Store.getState().heroes;
     const heroElements: object[] = [];
 
     for (const i in heroes) {

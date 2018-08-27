@@ -1,16 +1,21 @@
 import * as React from "react";
+import { RouteComponentProps } from "react-router";
+import Store from "../lib/store";
+import IHero from "../interfaces/Hero";
 
-interface Props {
-  hero: object;
+interface MatchParams {
+  index: number;
 }
 
-interface Hero {
-  name: string;
+interface Props extends RouteComponentProps<MatchParams> {
+  hero: IHero;
 }
 
 export default class HeroEquipment extends React.Component<Props> {
   render() {
-    const hero: Hero = [{ name: "Test Hero" }][0];
+    const state = Store.getState();
+    const index = this.props.match.params.index;
+    const hero = state.heroes[index];
 
     return (
       <div>

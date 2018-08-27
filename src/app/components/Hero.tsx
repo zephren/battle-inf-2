@@ -10,7 +10,7 @@ interface Props extends Partial<RouteComponentProps<{}>> {
 class Hero extends React.Component<Props, {}> {
   constructor(props: any) {
     super(props);
-
+    console.log(props.match);
     this.goEquipment = this.goEquipment.bind(this);
   }
 
@@ -23,7 +23,7 @@ class Hero extends React.Component<Props, {}> {
 
     return (
       <div>
-        {hero.name}
+        {hero.name} [{this.props.index}]
         <button onClick={this.goEquipment}>Equipment</button>
       </div>
     );
