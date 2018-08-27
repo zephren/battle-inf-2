@@ -1,5 +1,12 @@
 import * as React from "react";
+
 import Log from "./Log";
+import Header from "./Header";
+import Heroes from "./Heroes";
+import HeroEquipment from "./HeroEquipment";
+import Inventory from "./Inventory";
+import Town from "./Town";
+import Options from "./Options";
 
 import { HashRouter as Router, Route, Link } from "react-router-dom";
 
@@ -50,27 +57,26 @@ const Topics = ({ match }: any) => (
 export class Main extends React.Component {
   render() {
     return (
-      <Router>
-        <div>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/topics">Topics</Link>
-            </li>
-          </ul>
+      <div>
+        <Log />
+        <div className="main">
+          <Router>
+            <div>
+              <Header />
 
-          <hr />
-
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/topics" component={Topics} />
+              <Route exact path="/heroes" component={Heroes} />
+              <Route
+                exact
+                path="/heroes/:index/equipment"
+                component={HeroEquipment}
+              />
+              <Route exact path="/inventory" component={Inventory} />
+              <Route path="/town" component={Town} />
+              <Route path="/options" component={Options} />
+            </div>
+          </Router>
         </div>
-      </Router>
+      </div>
     );
   }
 }

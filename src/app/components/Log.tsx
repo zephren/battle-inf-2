@@ -1,16 +1,11 @@
 import * as React from "react";
 
-interface Props {
-  compiler: string;
-  framework: string;
-}
-
-export default class Main extends React.Component<Props, {}> {
+export default class Main extends React.Component {
   render() {
     return (
-      <h1>
-        LOGGING from {this.props.compiler} and {this.props.framework}!
-      </h1>
+      <div className="log">
+        <h1>Log: {null}</h1>
+      </div>
     );
   }
 }
