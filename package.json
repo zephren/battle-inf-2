@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server",
     "watch": "webpack --watch"
   },
   "author": "",
@@ -11,10 +12,12 @@
   "dependencies": {
     "@types/react": "^16.4.12",
     "@types/react-dom": "^16.0.7",
+    "@types/react-router-dom": "^4.3.0",
     "css-loader": "^1.0.0",
     "node-sass": "^4.9.3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-router-dom": "^4.3.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.22.1",
     "webpack": "^4.17.1",
