@@ -1,13 +1,47 @@
+@import "./colors";
+@import "./stats";
+@import "./hero";
+@import "./item";
+
 * {
+  margin: 0px;
+  padding: 0px;
   font-family: Roboto;
   font-weight: 300;
+  color: white;
+}
+
+body {
+  background: #333;
 }
 
 .log {
   float: left;
-  width: 300px;
+  width: 20%;
+  margin-left: 5%;
 }
 
 .main {
   float: left;
+  width: 70%;
+  margin-right: 5%;
+}
+
+button {
+  color: black;
+  border: 0px;
+  background: #eee;
+  height: 30px;
+  line-height: 16px;
+  border-top: 2px solid #eee;
+  border-bottom: 2px solid #bbb;
+  padding: 5px 10px;
+  cursor: pointer;
+
+  &.selected {
+    color: white;
+    background: #999;
+    border-top: 2px solid #bbb;
+    border-bottom: 2px solid #999;
+  }
 }

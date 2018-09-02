@@ -1,0 +1,70 @@
+.item {
+  width: 100%;
+  background: #444;
+  border-bottom: 2px solid #222;
+  margin-bottom: 5px;
+
+  .item-inner {
+    padding: 5px;
+
+    .item-name {
+      font-weight: bold;
+      margin-right: 10px;
+      color: inherit !important;
+    }
+
+    .fa {
+      color: inherit !important;
+    }
+
+    .level {
+      margin-right: 10px;
+      color: inherit !important;
+    }
+
+    .rarity {
+      float: right;
+      color: inherit !important;
+    }
+
+    .actions {
+      visibility: hidden;
+      float: right;
+      margin-top: 5px;
+    }
+
+    .clear {
+      clear: both;
+    }
+  }
+
+  .item-rarity {
+    &.r1 {
+      color: $white;
+    }
+
+    &.r2 {
+      color: $green;
+    }
+
+    &.r3 {
+      color: $blue;
+    }
+
+    &.r4 {
+      color: $red;
+    }
+
+    &.r5 {
+      color: $orange;
+    }
+  }
+
+  &:hover {
+    .item-inner {
+      .actions {
+        visibility: visible;
+      }
+    }
+  }
+}

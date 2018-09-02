@@ -1,9 +1,12 @@
 import * as React from "react";
+import Store from "../lib/store";
 
 import Log from "./Log";
 import Header from "./Header";
 import Heroes from "./Heroes";
+import HeroActions from "./HeroActions";
 import HeroEquipment from "./HeroEquipment";
+import HeroSkills from "./HeroSkills";
 import Inventory from "./Inventory";
 import Town from "./Town";
 import Options from "./Options";
@@ -57,6 +60,8 @@ const Topics = ({ match }: any) => (
 export class Main extends React.Component {
   constructor(props: any) {
     super(props);
+
+    Store.setTopLevelComponent(this);
   }
 
   render() {
@@ -73,6 +78,16 @@ export class Main extends React.Component {
                 exact
                 path="/heroes/:index/equipment"
                 component={HeroEquipment}
+              />
+              <Route
+                exact
+                path="/heroes/:index/skills"
+                component={HeroSkills}
+              />
+              <Route
+                exact
+                path="/heroes/:index/actions"
+                component={HeroActions}
               />
               <Route exact path="/inventory" component={Inventory} />
               <Route path="/town" component={Town} />

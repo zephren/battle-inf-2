@@ -1,0 +1,36 @@
+.hero {
+  width: 100%;
+  background: #444;
+  border-bottom: 2px solid #222;
+  margin-bottom: 5px;
+
+  .hero-inner {
+    padding: 5px;
+
+    .hero-name {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .level {
+    }
+
+    .options {
+      visibility: hidden;
+      float: right;
+      margin-top: 5px;
+    }
+
+    .clear {
+      clear: both;
+    }
+  }
+
+  &:hover {
+    .hero-inner {
+      .options {
+        visibility: visible;
+      }
+    }
+  }
+}

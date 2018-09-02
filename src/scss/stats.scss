@@ -1,0 +1,20 @@
+.stats {
+  .stat {
+    float: left;
+    margin-right: 10px;
+    margin-top: 5px;
+
+    .name {
+      font-size: 12px;
+    }
+
+    .value {
+      font-size: 12px;
+      font-weight: bold;
+
+      &.zero {
+        opacity: 0.25;
+      }
+    }
+  }
+}

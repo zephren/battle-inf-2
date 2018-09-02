@@ -1,15 +1,12 @@
 import * as React from "react";
-import IHero from "../interfaces/Hero";
-
-interface State {
-  heroes?: IHero[];
-}
+import initialState from "./initial-state";
+import IState from "../interfaces/State";
 
 let topLevelComponent: React.Component = null;
-let state: State = {};
+let state: IState = {};
 
 class Store {
-  constructor(initialState: State) {
+  constructor(initialState: IState) {
     if (initialState) {
       state = initialState;
     }
@@ -32,11 +29,9 @@ class Store {
   }
 }
 
-const initialState = {
-  heroes: [{ name: "Hero 0" }, { name: "Hero 1" }, { name: "Hero 2" }]
-};
 const store = new Store(initialState);
 
-//window.state = store.getState();
+// Best way to set a property on the window
+(<any>window).state = store.getState();
 
 export default store;
