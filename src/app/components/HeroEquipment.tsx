@@ -3,7 +3,7 @@ import { RouteComponentProps } from "react-router";
 import Store from "../lib/store";
 
 import CHero from "../classes/Hero";
-import CItem from "../classes/Item";
+import IItemData from "../interfaces/ItemData";
 
 import Hero from "./Hero";
 import Item from "./Item";
@@ -55,7 +55,7 @@ export default class HeroEquipment extends React.Component<Props> {
     return itemElements;
   }
 
-  renderEquipmentSlot(name: string, item: CItem): object {
+  renderEquipmentSlot(name: string, item: IItemData): object {
     return (
       <div>
         <div>{name}</div>
@@ -69,33 +69,20 @@ export default class HeroEquipment extends React.Component<Props> {
   }
 
   renderEquipment() {
-    const hero = this.state.hero;
+    const equipment = this.state.hero.getEquipment();
 
     return (
       <div>
+        <div>{this.renderEquipmentSlot("Head", equipment.get("head"))}</div>
+        <div>{this.renderEquipmentSlot("Body", equipment.get("body"))}</div>
+        <div>{this.renderEquipmentSlot("Legs", equipment.get("legs"))}</div>
+        <div>{this.renderEquipmentSlot("Feet", equipment.get("feet"))}</div>
+        <div>{this.renderEquipmentSlot("Hands", equipment.get("hands"))}</div>
         <div>
-          {this.renderEquipmentSlot("Head", hero.equipment.get("head"))}
+          {this.renderEquipmentSlot("Left Hand", equipment.get("hand", 1))}
         </div>
         <div>
-          {this.renderEquipmentSlot("Body", hero.equipment.get("body"))}
-        </div>
-        <div>
-          {this.renderEquipmentSlot("Legs", hero.equipment.get("legs"))}
-        </div>
-        <div>
-          {this.renderEquipmentSlot("Feet", hero.equipment.get("feet"))}
-        </div>
-        <div>
-          {this.renderEquipmentSlot("Hands", hero.equipment.get("hands"))}
-        </div>
-        <div>
-          {this.renderEquipmentSlot("Left Hand", hero.equipment.get("hand", 1))}
-        </div>
-        <div>
-          {this.renderEquipmentSlot(
-            "Right Hand",
-            hero.equipment.get("hand", 2)
-          )}
+          {this.renderEquipmentSlot("Right Hand", equipment.get("hand", 2))}
         </div>
       </div>
     );

@@ -1,7 +1,9 @@
 import CHero from "../classes/Hero";
-import CItem from "../classes/Item";
+import IItemData from "./ItemData";
+import ILogEntry from "./LogEntry";
 
 export default interface IState {
   heroes?: CHero[];
-  inventory?: CItem[];
+  inventory?: IItemData[];
+  log?: ILogEntry[];
 }

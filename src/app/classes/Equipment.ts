@@ -1,4 +1,4 @@
-import CItem from "./Item";
+import IItem from "../interfaces/ItemData";
 
 const totalAvailableSlots: {
   [key: string]: number;
@@ -12,9 +12,13 @@ const totalAvailableSlots: {
 };
 
 export default class Equipment {
-  items: CItem[] = [];
+  items: IItem[];
 
-  hasSpace(item: CItem) {
+  constructor(items: IItem[]) {
+    this.items = items;
+  }
+
+  hasSpace(item: IItem) {
     const type = item.type;
     let availableSlots = totalAvailableSlots[type];
 
@@ -42,8 +46,8 @@ export default class Equipment {
     return items;
   }
 
-  equip(item: CItem): CItem[] {
-    let removedItems: CItem[] = [];
+  equip(item: IItem): IItem[] {
+    let removedItems: IItem[] = [];
 
     if (!this.hasSpace(item)) {
       removedItems = this.removeItemsOfType(item.type);
@@ -54,7 +58,7 @@ export default class Equipment {
     return removedItems;
   }
 
-  unequip(item: CItem): CItem[] {
+  unequip(item: IItem): IItem[] {
     const index = this.items.indexOf(item);
 
     if (index === -1) {

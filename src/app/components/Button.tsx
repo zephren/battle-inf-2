@@ -3,6 +3,7 @@ import * as React from "react";
 interface Props {
   onClick?(event: React.MouseEvent<HTMLElement>): void;
   selected?: boolean;
+  notify?: boolean;
 }
 
 class Button extends React.Component<Props, {}> {
@@ -21,6 +22,10 @@ class Button extends React.Component<Props, {}> {
 
     if (this.props.selected) {
       className.push("selected");
+    }
+
+    if (this.props.notify) {
+      className.push("notify");
     }
 
     return (

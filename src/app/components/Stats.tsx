@@ -1,9 +1,9 @@
 import * as React from "react";
-import CStats from "../classes/Stats";
+import IStats from "../interfaces/Stats";
 import CStatConfig from "../classes/StatConfig";
 
 interface Props {
-  stats: CStats;
+  stats: IStats;
 }
 
 export default class Stats extends React.Component<Props> {

@@ -1,12 +1,12 @@
 import * as React from "react";
-import IHero from "../classes/Hero";
+import CHero from "../classes/Hero";
 import { withRouter, RouteComponentProps } from "react-router";
 
 import Stats from "./Stats";
 
 interface Props extends Partial<RouteComponentProps<{}>> {
   index: number;
-  hero: IHero;
+  hero: CHero;
 }
 
 class Hero extends React.Component<Props, {}> {
@@ -31,21 +31,21 @@ class Hero extends React.Component<Props, {}> {
   }
 
   render() {
-    const hero = this.props.hero;
+    const heroData = this.props.hero.data;
 
     return (
       <div className="hero">
         <div className="hero-inner">
           <div>
-            <span className="hero-name">{hero.name}</span>
-            <span className="level">Lv. {hero.level}</span>
+            <span className="hero-name">{heroData.name}</span>
+            <span className="level">Lv. {heroData.level}</span>
           </div>
           <div className="options">
             <button onClick={this.goEquipment}>Equipment</button>
             <button onClick={this.goSkills}>Skills</button>
             <button onClick={this.goActions}>Actions</button>
           </div>
-          <Stats stats={hero.statsBase} />
+          <Stats stats={heroData.statsBase} />
           <div className="clear" />
         </div>
       </div>

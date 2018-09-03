@@ -13,7 +13,7 @@ interface Props extends RouteComponentProps<MatchParams> {
   hero: CHero;
 }
 
-export default class HeroEquipment extends React.Component<Props> {
+export default class HeroSkills extends React.Component<Props> {
   render() {
     const state = Store.getState();
     const index = this.props.match.params.index;

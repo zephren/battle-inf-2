@@ -1,11 +1,11 @@
 import CHero from "../classes/Hero";
-import CItem from "../classes/Item";
+import IItemData from "../interfaces/ItemData";
 import Store from "./store";
 
 export default {
   unequip: {
     name: "Unequip",
-    action: (hero: CHero, item: CItem) => {
+    action: (hero: CHero, item: IItemData) => {
       const items = hero.unequip(item);
       const state = Store.getState();
 
@@ -17,7 +17,7 @@ export default {
 
   equip: {
     name: "Equip",
-    action: (hero: CHero, item: CItem) => {
+    action: (hero: CHero, item: IItemData) => {
       const items = hero.equip(item);
       const state = Store.getState();
 
@@ -32,6 +32,6 @@ export default {
 
   sell: {
     name: "Sell",
-    action: (hero: CHero, item: CItem) => {}
+    action: (hero: CHero, item: IItemData) => {}
   }
 };

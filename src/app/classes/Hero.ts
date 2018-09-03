@@ -1,54 +1,47 @@
-import CStats from "./Stats";
+import ICharacterData from "../interfaces/CharacterData";
+import IItemData, { createItem } from "../interfaces/ItemData";
 import CEquipment from "./Equipment";
 import nameGenerator from "../lib/name-generator";
 
-import CItem from "./Item";
-import CItemCreationProperties from "./ItemCreationProperties";
+import CCharacter from "./Character";
 
-export default class Hero {
-  name: string;
-  statsBase: CStats;
-  statsGrowth: CStats;
-  statsTotal: CStats;
-  equipment: CEquipment;
-  exp: number;
-  level: number;
+export default class Hero extends CCharacter {
+  constructor(iniitalData: ICharacterData = null) {
+    super(iniitalData);
 
-  constructor() {
-    this.name =
-      nameGenerator.randomName(2, 5) + " " + nameGenerator.randomName(2, 5);
-    this.level = 1;
+    if (!iniitalData) {
+      const data = this.data;
 
-    this.statsBase = new CStats();
+      data.name =
+        nameGenerator.randomName(2, 5) + " " + nameGenerator.randomName(2, 5);
+      data.level = 1;
+      data.battlActionCode = "";
 
-    this.statsBase.hp = 100;
-    this.statsBase.atk = 20;
-    this.statsBase.def = 10;
+      const equipment = new CEquipment(this.data.equipment);
 
-    this.statsGrowth = new CStats();
-    this.statsTotal = new CStats();
-
-    this.equipment = new CEquipment();
-    this.equipment.equip(
-      new CItem(new CItemCreationProperties({ type: "head" }))
-    );
-    this.equipment.equip(
-      new CItem(new CItemCreationProperties({ type: "body" }))
-    );
-    this.equipment.equip(
-      new CItem(new CItemCreationProperties({ type: "legs" }))
-    );
+      equipment.equip(createItem({ type: "head" }));
+      equipment.equip(createItem({ type: "body" }));
+      equipment.equip(createItem({ type: "legs" }));
+    }
   }
 
-  equip(item: CItem) {
-    const items = this.equipment.equip(item);
+  getEquipment(): CEquipment {
+    return new CEquipment(this.data.equipment);
+  }
 
+  equip(item: IItemData): IItemData[] {
+    const equipment = this.getEquipment();
+    const items = equipment.equip(item);
     return items;
   }
 
-  unequip(item: CItem) {
-    const items = this.equipment.unequip(item);
-
+  unequip(item: IItemData): IItemData[] {
+    const equipment = this.getEquipment();
+    const items = equipment.unequip(item);
     return items;
+  }
+
+  updateTotalStats() {
+    //data.statsTotal = new CStats();
   }
 }

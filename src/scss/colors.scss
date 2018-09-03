@@ -3,4 +3,21 @@ $green: #52d273;
 $blue: #5b88e9;
 $red: #ff6d80;
 $orange: #ff8a2a;
+$orange-dark: #a3581a;
 $yellow: #e5c45e;
+
+.color-positive {
+  color: $green;
+}
+
+.color-negative {
+  color: $red;
+}
+
+.color-info {
+  color: $yellow;
+}
+
+.color-special {
+  color: $blue;
+}

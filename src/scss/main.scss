@@ -2,6 +2,7 @@
 @import "./stats";
 @import "./hero";
 @import "./item";
+@import "./button";
 
 * {
   margin: 0px;
@@ -15,10 +16,18 @@ body {
   background: #333;
 }
 
+b {
+  font-weight: bold;
+}
+
 .log {
   float: left;
   width: 20%;
   margin-left: 5%;
+
+  .entry {
+    font-size: 12px;
+  }
 }
 
 .main {
@@ -27,21 +36,11 @@ body {
   margin-right: 5%;
 }
 
-button {
-  color: black;
-  border: 0px;
-  background: #eee;
-  height: 30px;
-  line-height: 16px;
-  border-top: 2px solid #eee;
-  border-bottom: 2px solid #bbb;
-  padding: 5px 10px;
-  cursor: pointer;
+#action-editor {
+  width: 100% !important;
+}
 
-  &.selected {
-    color: white;
-    background: #999;
-    border-top: 2px solid #bbb;
-    border-bottom: 2px solid #999;
-  }
+.ace_editor,
+.ace_editor * {
+  font-family: monospace !important;
 }
