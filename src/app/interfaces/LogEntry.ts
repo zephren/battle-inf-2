@@ -1,3 +1,4 @@
 export default interface LogEntry {
-  text: string;
+  type: string;
+  data: any;
 }

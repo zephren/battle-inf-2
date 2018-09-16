@@ -19,7 +19,7 @@ const rarityMod = 1.7;
 export function createItem(properties: IItemCreationProperties = {}) {
   const item: IItemData = {};
 
-  item.level = properties.level;
+  item.level = properties.level || 1;
 
   determineRarity(item, properties);
   determineType(item, properties);

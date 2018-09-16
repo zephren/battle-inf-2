@@ -10,7 +10,9 @@ export default {
       const state = Store.getState();
 
       state.inventory = state.inventory.concat(items);
-      console.log(state.inventory);
+
+      hero.updateTotalStats();
+
       Store.update();
     }
   },
@@ -25,6 +27,8 @@ export default {
       state.inventory.splice(index, 1);
 
       state.inventory = state.inventory.concat(items);
+
+      hero.updateTotalStats();
 
       Store.update();
     }

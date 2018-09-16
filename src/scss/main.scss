@@ -3,6 +3,7 @@
 @import "./hero";
 @import "./item";
 @import "./button";
+@import "./battle";
 
 * {
   margin: 0px;
@@ -12,28 +13,87 @@
   color: white;
 }
 
+html {
+  height: 100%;
+}
+
 body {
   background: #333;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
+
+  > div {
+    height: 100%;
+  }
 }
 
 b {
   font-weight: bold;
 }
 
-.log {
-  float: left;
-  width: 20%;
-  margin-left: 5%;
+h1 {
+  text-shadow: 0px 2px #222;
+  margin-bottom: 5px;
+}
 
-  .entry {
-    font-size: 12px;
+.fa {
+  color: inherit;
+}
+
+.log {
+  position: absolute;
+  top: 0%;
+  bottom: 0%;
+  left: 2%;
+  width: 30%;
+
+  .log-area {
+    position: absolute;
+    top: 50px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    padding-right: 2%;
+    overflow-y: scroll;
+
+    .entry {
+      font-size: 12px;
+      margin: 2px 0px;
+
+      .log-header {
+        display: block;
+        text-align: center;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 20px;
+        text-shadow: 0px 2px #222;
+      }
+
+      .log-note {
+        display: block;
+        background: #444;
+        color: white;
+        border-radius: 10px;
+        padding: 2px 10px;
+        margin: 10px 0px;
+        border-bottom: 2px solid #222;
+      }
+    }
   }
 }
 
 .main {
-  float: left;
-  width: 70%;
-  margin-right: 5%;
+  position: absolute;
+  top: 0%;
+  bottom: 0%;
+  left: 34%;
+  width: 64%;
+  padding-right: 2%;
+  overflow-y: auto;
 }
 
 #action-editor {

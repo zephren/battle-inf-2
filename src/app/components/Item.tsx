@@ -3,7 +3,7 @@ import CHero from "../classes/Hero";
 import IItemData from "../interfaces/ItemData";
 import Stats from "./Stats";
 
-import Button from "./Button";
+import Button from "./controls/Button";
 import Hero from "./Hero";
 
 interface IItemAction {
@@ -31,9 +31,13 @@ export default class Item extends React.Component<Props> {
     const item = this.props.item;
     const hero = this.props.hero;
 
-    for (const action of actions) {
+    for (const i in actions) {
+      const action = actions[i];
+
       actionElements.push(
-        <Button onClick={() => action.action(hero, item)}>{action.name}</Button>
+        <Button key={i} onClick={() => action.action(hero, item)}>
+          {action.name}
+        </Button>
       );
     }
 
@@ -45,7 +49,7 @@ export default class Item extends React.Component<Props> {
     const rarityElements: object[] = [];
 
     for (let i = 0; i < item.rarity; i++) {
-      rarityElements.push(<i className="fa fa-star" />);
+      rarityElements.push(<i key={i} className="fa fa-star" />);
     }
 
     return rarityElements;

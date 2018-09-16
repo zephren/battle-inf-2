@@ -42,9 +42,12 @@ export default class HeroEquipment extends React.Component<Props> {
     const state = Store.getState();
     const itemElements: object[] = [];
 
-    for (const item of state.inventory) {
+    for (const i in state.inventory) {
+      const item = state.inventory[i];
+
       itemElements.push(
         <Item
+          key={i}
           item={item}
           hero={this.state.hero}
           actions={[itemActions.equip]}

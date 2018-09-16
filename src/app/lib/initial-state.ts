@@ -16,7 +16,9 @@ const initialState: IState = {
       subType: "twoHandedSword",
       rarity: 4
     })
-  ]
+  ],
+  log: [],
+  scrollLogToBottom: false
 };
 
 export default initialState;

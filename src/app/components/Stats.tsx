@@ -15,7 +15,7 @@ export default class Stats extends React.Component<Props> {
     }
 
     return (
-      <div className="stat">
+      <div key={stat} className="stat">
         <div className="name">{CStatConfig[stat].displayName}</div>
         <div className={valueClassName.join(" ")}>{value}</div>
       </div>

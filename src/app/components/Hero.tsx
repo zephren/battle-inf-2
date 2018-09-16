@@ -1,12 +1,16 @@
 import * as React from "react";
 import CHero from "../classes/Hero";
 import { withRouter, RouteComponentProps } from "react-router";
+import ConfirmButton from "./controls/ConfirmButton";
+import HeroActions from "../lib/hero-actions";
 
 import Stats from "./Stats";
+import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from "constants";
 
 interface Props extends Partial<RouteComponentProps<{}>> {
   index: number;
   hero: CHero;
+  noOptions?: boolean;
 }
 
 class Hero extends React.Component<Props, {}> {
@@ -16,6 +20,7 @@ class Hero extends React.Component<Props, {}> {
     this.goEquipment = this.goEquipment.bind(this);
     this.goSkills = this.goSkills.bind(this);
     this.goActions = this.goActions.bind(this);
+    this.remove = this.remove.bind(this);
   }
 
   goEquipment() {
@@ -30,8 +35,27 @@ class Hero extends React.Component<Props, {}> {
     this.props.history.push(`/heroes/${this.props.index}/actions`);
   }
 
+  remove() {
+    HeroActions.removeHero(this.props.hero);
+    this.props.history.push("/heroes");
+  }
+
   render() {
     const heroData = this.props.hero.data;
+
+    let options = null;
+    if (!this.props.noOptions) {
+      options = (
+        <div className="options">
+          <button onClick={this.goEquipment}>Equipment</button>
+          <button onClick={this.goSkills}>Skills</button>
+          <button onClick={this.goActions}>Actions</button>
+          <ConfirmButton onConfirm={this.remove}>
+            <i className="fa fa-trash" />
+          </ConfirmButton>
+        </div>
+      );
+    }
 
     return (
       <div className="hero">
@@ -40,12 +64,8 @@ class Hero extends React.Component<Props, {}> {
             <span className="hero-name">{heroData.name}</span>
             <span className="level">Lv. {heroData.level}</span>
           </div>
-          <div className="options">
-            <button onClick={this.goEquipment}>Equipment</button>
-            <button onClick={this.goSkills}>Skills</button>
-            <button onClick={this.goActions}>Actions</button>
-          </div>
-          <Stats stats={heroData.statsBase} />
+          {options}
+          <Stats stats={heroData.statsTotal} />
           <div className="clear" />
         </div>
       </div>

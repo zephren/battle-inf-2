@@ -2,6 +2,8 @@ import * as React from "react";
 import initialState from "./initial-state";
 import IState from "../interfaces/State";
 import CHero from "../classes/Hero";
+import GameActions from "./game-actions";
+import gameActions from "./game-actions";
 
 let topLevelComponent: React.Component = null;
 let state: IState = {};
@@ -33,11 +35,24 @@ class Store {
 const existingState: IState = JSON.parse(localStorage.getItem("saveState"));
 const store = new Store();
 
-if (existingState) {
+const reset = false;
+
+if (!existingState || reset) {
+  // Start a new game
+  store.setFullState(initialState);
+
+  // Immediately save the state
+  localStorage.setItem("saveState", JSON.stringify(state));
+} else if (existingState) {
+  // Load an existing game
   const heroes = [];
 
   for (const heroData of existingState.heroes) {
-    heroes.push(new CHero(heroData.data));
+    const hero = new CHero(heroData.data);
+
+    hero.updateTotalStats();
+
+    heroes.push(hero);
   }
 
   const newState = {
@@ -47,8 +62,6 @@ if (existingState) {
   };
 
   store.setFullState(newState);
-} else {
-  store.setFullState(initialState);
 }
 
 if (!state.log) {

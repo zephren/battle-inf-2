@@ -9,7 +9,7 @@ export default class Heroes extends React.Component {
     const heroElements: object[] = [];
 
     for (const i in heroes) {
-      heroElements.push(<Hero hero={heroes[i]} index={i} />);
+      heroElements.push(<Hero key={i} hero={heroes[i]} index={i} />);
     }
 
     return (

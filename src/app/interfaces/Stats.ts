@@ -18,3 +18,7 @@ export function createStats(): IStats {
     mag: 0
   };
 }
+
+export function cloneStats(stats: IStats): IStats {
+  return JSON.parse(JSON.stringify(stats));
+}

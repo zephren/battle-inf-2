@@ -1,4 +1,6 @@
 module.exports = {
+  mode: "development",
+
   entry: {
     bundle: "./src/app/index.tsx",
     style: "./src/scss/main.scss"

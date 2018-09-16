@@ -4,6 +4,7 @@ interface Props {
   onClick?(event: React.MouseEvent<HTMLElement>): void;
   selected?: boolean;
   notify?: boolean;
+  disabled?: boolean;
 }
 
 class Button extends React.Component<Props, {}> {
@@ -14,7 +15,9 @@ class Button extends React.Component<Props, {}> {
   }
 
   click(event: React.MouseEvent<HTMLElement>) {
-    this.props.onClick(event);
+    if (!this.props.disabled) {
+      this.props.onClick(event);
+    }
   }
 
   render() {
@@ -26,6 +29,10 @@ class Button extends React.Component<Props, {}> {
 
     if (this.props.notify) {
       className.push("notify");
+    }
+
+    if (this.props.disabled) {
+      className.push("disabled");
     }
 
     return (

@@ -10,8 +10,12 @@ export default class Inventory extends React.Component {
     const state = Store.getState();
     const itemElements: object[] = [];
 
-    for (const item of state.inventory) {
-      itemElements.push(<Item item={item} actions={[itemActions.sell]} />);
+    for (const i in state.inventory) {
+      const item = state.inventory[i];
+
+      itemElements.push(
+        <Item key={i} item={item} actions={[itemActions.sell]} />
+      );
     }
 
     return (

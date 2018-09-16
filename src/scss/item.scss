@@ -11,10 +11,15 @@
       font-weight: bold;
       margin-right: 10px;
       color: inherit !important;
+      text-shadow: 0px 2px #222;
     }
 
     .fa {
       color: inherit !important;
+      &.fa-star {
+        margin-left: -5px;
+        text-shadow: 0px 0px 2px #222;
+      }
     }
 
     .level {

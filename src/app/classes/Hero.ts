@@ -40,8 +40,4 @@ export default class Hero extends CCharacter {
     const items = equipment.unequip(item);
     return items;
   }
-
-  updateTotalStats() {
-    //data.statsTotal = new CStats();
-  }
 }

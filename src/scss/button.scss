@@ -21,4 +21,8 @@ button {
     border-top-color: $orange;
     border-bottom-color: $orange-dark;
   }
+
+  &.disabled {
+    color: #aaa;
+  }
 }

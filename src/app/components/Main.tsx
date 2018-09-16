@@ -66,36 +66,30 @@ export class Main extends React.Component {
 
   render() {
     return (
-      <div>
-        <Log />
-        <div className="main">
-          <Router>
-            <div>
-              <Header />
+      <Router>
+        <div>
+          <Log />
+          <div className="main">
+            <Header />
 
-              <Route exact path="/heroes" component={Heroes} />
-              <Route
-                exact
-                path="/heroes/:index/equipment"
-                component={HeroEquipment}
-              />
-              <Route
-                exact
-                path="/heroes/:index/skills"
-                component={HeroSkills}
-              />
-              <Route
-                exact
-                path="/heroes/:index/actions"
-                component={HeroActions}
-              />
-              <Route exact path="/inventory" component={Inventory} />
-              <Route path="/town" component={Town} />
-              <Route path="/options" component={Options} />
-            </div>
-          </Router>
+            <Route exact path="/heroes" component={Heroes} />
+            <Route
+              exact
+              path="/heroes/:index/equipment"
+              component={HeroEquipment}
+            />
+            <Route exact path="/heroes/:index/skills" component={HeroSkills} />
+            <Route
+              exact
+              path="/heroes/:index/actions"
+              component={HeroActions}
+            />
+            <Route exact path="/inventory" component={Inventory} />
+            <Route path="/town" component={Town} />
+            <Route path="/options" component={Options} />
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }

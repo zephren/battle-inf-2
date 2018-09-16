@@ -1,7 +1,7 @@
 import * as React from "react";
 import CHero from "../classes/Hero";
 import AceEditor from "react-ace";
-import Button from "./Button";
+import Button from "./controls/Button";
 import gameActions from "../lib/game-actions";
 
 import "brace/mode/javascript";
@@ -29,7 +29,7 @@ export default class ActionBuilder extends React.Component<Props, {}> {
 
   save() {
     this.props.hero.data.battlActionCode = this.state.code;
-    gameActions.saveState.action();
+    gameActions.saveState();
     this.setState({
       changed: false
     });
@@ -47,7 +47,6 @@ export default class ActionBuilder extends React.Component<Props, {}> {
           mode="javascript"
           theme="monokai"
           onChange={code => {
-            console.log(code);
             this.setState({ code, changed: true });
           }}
           name="action-editor"
