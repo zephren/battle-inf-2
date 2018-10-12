@@ -1,14 +1,13 @@
 import * as React from "react";
-import CHero from "../classes/Hero";
 import AceEditor from "react-ace";
 import Button from "./controls/Button";
-import gameActions from "../lib/game-actions";
 
 import "brace/mode/javascript";
 import "brace/theme/monokai";
 
 interface Props {
-  hero: CHero;
+  code: string;
+  saveCode: (newCode: string) => void;
 }
 
 export default class ActionBuilder extends React.Component<Props, {}> {
@@ -22,14 +21,15 @@ export default class ActionBuilder extends React.Component<Props, {}> {
 
     this.save = this.save.bind(this);
 
-    this.state.code =
-      this.props.hero.data.battlActionCode || "console.log(hero)";
+    this.state.code = this.props.code;
     this.state.changed = false;
   }
 
   save() {
-    this.props.hero.data.battlActionCode = this.state.code;
-    gameActions.saveState();
+    if (this.props.saveCode) {
+      this.props.saveCode(this.state.code);
+    }
+
     this.setState({
       changed: false
     });
@@ -38,7 +38,6 @@ export default class ActionBuilder extends React.Component<Props, {}> {
   render() {
     return (
       <div>
-        <h1>Action Builder</h1>
         <Button onClick={this.save} notify={this.state.changed}>
           Save
         </Button>

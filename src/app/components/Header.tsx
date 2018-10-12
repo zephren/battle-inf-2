@@ -1,13 +1,9 @@
 import * as React from "react";
 import Button from "./controls/Button";
-import Store from "../lib/store";
-import LogActions from "../lib/log-actions";
-
+import Store, { setupState } from "../lib/store";
+import battleInit from "../lib/battle/battle-init";
+import standardBattle from "../lib/battle/battle-configs/standard";
 import { withRouter, RouteComponentProps } from "react-router";
-import CBattle from "../classes/Battle";
-import CBattleTeam from "../classes/BattleTeam";
-import CEnemy from "../classes/Enemy";
-import justAttack from "../lib/enemies/behaviors/just-attack";
 
 interface Props extends Partial<RouteComponentProps<{}>> {}
 
@@ -20,7 +16,12 @@ const options = [
     }
   },
   {
-    name: "Inventory",
+    name: () => {
+      const state = Store.getState();
+      const inventory = state.inventory;
+      const properties = state.properties;
+      return `Inventory (${inventory.length} / ${properties.inventorySize})`;
+    },
     id: "inventory",
     onClick: function(props: Props) {
       props.history.push("/inventory");
@@ -42,43 +43,37 @@ const options = [
   },
   {
     name: "Reset",
-    onClick: function() {}
+    onClick: function() {
+      setupState(true);
+      Store.update();
+    }
   }
 ];
 
 class Header extends React.Component<Props, {}> {
+  state: {
+    battleInfinite?: boolean;
+  } = {};
+
   constructor(props: any) {
     super(props);
 
     this.startBattle = this.startBattle.bind(this);
+    this.toggleBattleInfinite = this.toggleBattleInfinite.bind(this);
+
+    this.state.battleInfinite = false;
   }
 
   startBattle() {
     const state = Store.getState();
-    const heroes = state.heroes;
-    const enemies = [new CEnemy(justAttack)];
 
-    enemies[0].data.name = "Monster 1";
-    // enemies[1].data.name = "Monster 2";
-
-    LogActions.addText(":t:Encounter:t:");
-    LogActions.addCharacter(enemies[0]);
-    // LogActions.addCharacter(enemies[1]);
-
-    const teamA = new CBattleTeam(heroes);
-    teamA.name = "Hero";
-    const teamB = new CBattleTeam(enemies);
-    teamB.name = "Enemy";
-
-    const battle = new CBattle([teamA, teamB]);
-
-    battle.start();
-    battle.onFinish = () => {
-      state.battle = null;
-      Store.update();
-    };
-
-    state.battle = battle;
+    state.battle = battleInit(
+      standardBattle(() => {
+        // Need to clear out the battle from the state once it is done
+        state.battle = null;
+        Store.update();
+      })
+    );
 
     Store.update();
   }
@@ -90,6 +85,12 @@ class Header extends React.Component<Props, {}> {
     battle.stop();
   }
 
+  toggleBattleInfinite() {
+    this.setState({
+      battleInfinite: !this.state.battleInfinite
+    });
+  }
+
   render() {
     const state = Store.getState();
     const headerElements = [];
@@ -99,13 +100,16 @@ class Header extends React.Component<Props, {}> {
       const selected =
         this.props.location.pathname.toString().split("/")[1] === option.id;
 
+      const name =
+        typeof option.name === "function" ? option.name() : option.name;
+
       headerElements.push(
         <Button
           key={i}
           selected={selected}
           onClick={option.onClick.bind(this, this.props)}
         >
-          {option.name}
+          {name}
         </Button>
       );
     }
@@ -126,6 +130,12 @@ class Header extends React.Component<Props, {}> {
             Start Battle
           </Button>
           {stopBattle}
+          <Button
+            onClick={this.toggleBattleInfinite}
+            selected={this.state.battleInfinite}
+          >
+            <i className="fa fa-infinity" />
+          </Button>
         </div>
         {headerElements}
       </div>

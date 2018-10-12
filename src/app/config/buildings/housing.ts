@@ -1,3 +1,4 @@
 export default {
-  name: "Housing"
+  name: "Housing",
+  description: "A place for residents to live"
 };

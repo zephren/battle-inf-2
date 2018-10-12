@@ -2,7 +2,7 @@ import IItemTypes from "../../interfaces/ItemTypes";
 
 const itemTypes: IItemTypes = {
   plate: {
-    name: "Plate Healmet",
+    name: "Plate Helmet",
     material: "metal",
     statModifiers: {
       def: 0.5

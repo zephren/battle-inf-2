@@ -36,6 +36,8 @@ export default {
 
   sell: {
     name: "Sell",
-    action: (hero: CHero, item: IItemData) => {}
+    action: (hero: CHero, item: IItemData) => {
+      alert("Need to implement");
+    }
   }
 };

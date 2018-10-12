@@ -8,6 +8,7 @@ import HeroActions from "./HeroActions";
 import HeroEquipment from "./HeroEquipment";
 import HeroSkills from "./HeroSkills";
 import Inventory from "./Inventory";
+import NewItemAction from "./NewItemAction";
 import Town from "./Town";
 import Options from "./Options";
 
@@ -85,6 +86,11 @@ export class Main extends React.Component {
               component={HeroActions}
             />
             <Route exact path="/inventory" component={Inventory} />
+            <Route
+              exact
+              path="/inventory/newItemAction"
+              component={NewItemAction}
+            />
             <Route path="/town" component={Town} />
             <Route path="/options" component={Options} />
           </div>

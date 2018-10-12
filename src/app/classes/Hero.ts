@@ -5,6 +5,9 @@ import nameGenerator from "../lib/name-generator";
 
 import CCharacter from "./Character";
 
+const initialBattleActionCode = `const target = battle.targetOpponent();
+battle.attack(target);`;
+
 export default class Hero extends CCharacter {
   constructor(iniitalData: ICharacterData = null) {
     super(iniitalData);
@@ -22,6 +25,8 @@ export default class Hero extends CCharacter {
       equipment.equip(createItem({ type: "head" }));
       equipment.equip(createItem({ type: "body" }));
       equipment.equip(createItem({ type: "legs" }));
+
+      this.data.battlActionCode = initialBattleActionCode;
     }
   }
 

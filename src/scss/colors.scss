@@ -1,7 +1,9 @@
 $white: #ffffff;
 $green: #52d273;
+$green-dark: #3a9451;
 $blue: #5b88e9;
 $red: #ff6d80;
+$red-dark: #9e3f4c;
 $orange: #ff8a2a;
 $orange-dark: #a3581a;
 $yellow: #e5c45e;
@@ -24,4 +26,28 @@ $yellow: #e5c45e;
 
 .color-red {
   color: $red;
+}
+
+.color-green {
+  color: $green;
+}
+
+.r1 {
+  color: $white;
+}
+
+.r2 {
+  color: $green;
+}
+
+.r3 {
+  color: $blue;
+}
+
+.r4 {
+  color: $red;
+}
+
+.r5 {
+  color: $orange;
 }

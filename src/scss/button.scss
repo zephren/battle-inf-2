@@ -25,4 +25,20 @@ button {
   &.disabled {
     color: #aaa;
   }
+
+  &.positive {
+    background: $green;
+    border-top-color: $green;
+    border-bottom-color: $green-dark;
+  }
+
+  &.negative {
+    background: $red;
+    border-top-color: $red;
+    border-bottom-color: $red-dark;
+  }
+
+  &:focus {
+    outline: 0;
+  }
 }

@@ -28,13 +28,10 @@ export default class HeroEquipment extends React.Component<Props> {
 
     this.renderEquipment = this.renderEquipment.bind(this);
 
-    const appState = Store.getState();
     const index = this.props.match.params.index;
-    const hero = appState.heroes[index];
 
     this.state = {
-      index,
-      hero
+      index
     };
   }
 
@@ -72,7 +69,9 @@ export default class HeroEquipment extends React.Component<Props> {
   }
 
   renderEquipment() {
-    const equipment = this.state.hero.getEquipment();
+    const index = this.state.index;
+    const hero = Store.getState().heroes[index];
+    const equipment = hero.getEquipment();
 
     return (
       <div>
@@ -92,7 +91,8 @@ export default class HeroEquipment extends React.Component<Props> {
   }
 
   render() {
-    const hero = this.state.hero;
+    const index = this.state.index;
+    const hero = Store.getState().heroes[index];
 
     return (
       <div style={{ width: "100%" }}>

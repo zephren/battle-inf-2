@@ -101,7 +101,7 @@ function determineRarity(item: IItemData, properties: IItemCreationProperties) {
   let rarity = 0;
 
   for (var i = 1; i <= rarityMax; i++) {
-    if (r <= Math.pow(2, i * rarityMod)) {
+    if (r <= Math.ceil(Math.pow(2, i * rarityMod))) {
       rarity = rarityMax - (i - 1);
       break;
     }

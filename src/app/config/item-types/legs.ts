@@ -2,14 +2,14 @@ import IItemTypes from "../../interfaces/ItemTypes";
 
 const itemTypes: IItemTypes = {
   plate: {
-    name: "Plate Healmet",
+    name: "Plate Leggings",
     material: "metal",
     statModifiers: {
       def: 0.4
     }
   },
   chain: {
-    name: "Chain Helmet",
+    name: "Chain Leggings",
     material: "metal",
     statModifiers: {
       def: 0.2,
@@ -17,7 +17,7 @@ const itemTypes: IItemTypes = {
     }
   },
   cloth: {
-    name: "Cloth Helmet",
+    name: "Cloth Leggings",
     material: "cloth",
     statModifiers: {
       def: 0.2,

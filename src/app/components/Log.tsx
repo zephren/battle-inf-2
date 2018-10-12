@@ -16,6 +16,10 @@ export default class Main extends React.Component {
     this.checkScroll = this.checkScroll.bind(this);
   }
 
+  componentDidMount() {
+    setTimeout(this.scrollToBottom);
+  }
+
   parseLogEntry(entry: ILogEntry, index: string): object {
     if (entry.type === "text") {
       let result = entry.data.text;
@@ -37,12 +41,19 @@ export default class Main extends React.Component {
       result = result.replace(/:pad:/g, `<p class="battle-log-padding"></p>`);
       result = result.replace(
         /:t:(.*?):t:/g,
-        `<d class="color-info log-header">&mdash; $1 &mdash;</b>`
+        `<b class="color-info log-header">&mdash; $1 &mdash;</b>`
       );
+
+      result = result.replace(/:r(\d):(.*?):r\d:/g, `<b class="r$1">$2</b>`);
 
       result = result.replace(
         /:def:(.*?):def:/g,
         `<d class="log-note"><table style="width:100%"><tbody><tr><td>$1</td><td class="color-red" style="text-align:right"><i class="fa fa-times fa-2x"/></td></tr></tbody></table>`
+      );
+
+      result = result.replace(
+        /:item:(.*?):item:/g,
+        `<d class="log-note"><table style="width:100%"><tbody><tr><td>$1</td><td class="color-green" style="text-align:right"><i class="fa fa-gift fa-2x"/></td></tr></tbody></table>`
       );
 
       return (
@@ -112,7 +123,10 @@ export default class Main extends React.Component {
         <h1>Battle Log</h1>
         <div className="log-area" ref={el => (this.messageArea = el)}>
           {this.renderLog()}
-          <div ref={el => (this.messagesEnd = el)} />
+          <div
+            style={{ marginTop: "50px" }}
+            ref={el => (this.messagesEnd = el)}
+          />
         </div>
       </div>
     );

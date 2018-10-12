@@ -44,8 +44,6 @@ export default class Character {
         this.data.statsTotal[i] += item.stats[i];
       }
     }
-
-    console.log(this.data.name, this.data.statsTotal);
   }
 
   setActualStats() {

@@ -4,11 +4,12 @@
 @import "./item";
 @import "./button";
 @import "./battle";
+@import "./town";
 
 * {
   margin: 0px;
   padding: 0px;
-  font-family: Roboto;
+  font-family: Roboto, Sans;
   font-weight: 300;
   color: white;
 }
@@ -47,7 +48,7 @@ h1 {
   position: absolute;
   top: 0%;
   bottom: 0%;
-  left: 2%;
+  left: 1%;
   width: 30%;
 
   .log-area {
@@ -90,9 +91,8 @@ h1 {
   position: absolute;
   top: 0%;
   bottom: 0%;
-  left: 34%;
-  width: 64%;
-  padding-right: 2%;
+  left: 32%;
+  right: 1%;
   overflow-y: auto;
 }
 

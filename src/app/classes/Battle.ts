@@ -50,6 +50,7 @@ export default class Battle {
     if (member.data.battlActionCode) {
       eval(`
         battleFunction = (context) => {
+          const member = undefined;
           const hero = context.hero;
           const battle = context.battleApi;
 

@@ -5,7 +5,6 @@ import ConfirmButton from "./controls/ConfirmButton";
 import HeroActions from "../lib/hero-actions";
 
 import Stats from "./Stats";
-import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from "constants";
 
 interface Props extends Partial<RouteComponentProps<{}>> {
   index: number;
@@ -60,11 +59,11 @@ class Hero extends React.Component<Props, {}> {
     return (
       <div className="hero">
         <div className="hero-inner">
+          {options}
           <div>
             <span className="hero-name">{heroData.name}</span>
             <span className="level">Lv. {heroData.level}</span>
           </div>
-          {options}
           <Stats stats={heroData.statsTotal} />
           <div className="clear" />
         </div>

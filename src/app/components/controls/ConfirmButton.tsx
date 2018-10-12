@@ -39,10 +39,10 @@ class Button extends React.Component<Props, {}> {
     if (this.state.confirming) {
       button = (
         <span>
-          <button className="" onClick={this.confirm}>
+          <button className="positive" onClick={this.confirm}>
             <i className="fa fa-check" />
           </button>
-          <button className="" onClick={this.cancel}>
+          <button className="negative" onClick={this.cancel}>
             <i className="fa fa-times" />
           </button>
         </span>

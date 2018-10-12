@@ -1,3 +1,4 @@
 export default {
-  name: "Smith"
+  name: "Smith",
+  description: "A work space for crafting equipment"
 };
