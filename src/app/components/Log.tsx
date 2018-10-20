@@ -6,8 +6,9 @@ import LogActions from "../lib/log-actions";
 import Button from "./controls/Button";
 
 export default class Main extends React.Component {
-  messagesEnd: any;
-  messageArea: any;
+  messagesEnd: any = null;
+  messageArea: any = null;
+  shouldScroll: boolean = false;
 
   constructor(props: any) {
     super(props);
@@ -85,27 +86,29 @@ export default class Main extends React.Component {
   }
 
   scrollToBottom() {
-    this.messagesEnd.scrollIntoView({ behavior: "instant" });
+    if (this.messagesEnd) {
+      this.messagesEnd.scrollIntoView({ behavior: "instant" });
+    }
   }
 
   checkScroll() {
     const state = Store.getState();
-    let scroll = false;
 
     if (state.scrollLogToBottom) {
       if (
         this.messageArea.scrollTop + this.messageArea.clientHeight + 100 >
         this.messageArea.scrollHeight
       ) {
-        scroll = true;
+        this.shouldScroll = true;
       }
     }
+  }
 
-    setTimeout(() => {
-      if (scroll) {
-        this.scrollToBottom();
-      }
-    });
+  componentDidUpdate() {
+    if (this.shouldScroll) {
+      this.shouldScroll = false;
+      this.scrollToBottom();
+    }
   }
 
   clearLog() {

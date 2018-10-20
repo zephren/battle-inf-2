@@ -30,12 +30,14 @@ button {
     background: $green;
     border-top-color: $green;
     border-bottom-color: $green-dark;
+    width: 35px;
   }
 
   &.negative {
     background: $red;
     border-top-color: $red;
     border-bottom-color: $red-dark;
+    width: 35px;
   }
 
   &:focus {

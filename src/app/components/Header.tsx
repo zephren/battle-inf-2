@@ -1,9 +1,11 @@
 import * as React from "react";
 import Button from "./controls/Button";
+import ConfirmButton from "./controls/ConfirmButton";
 import Store, { setupState } from "../lib/store";
 import battleInit from "../lib/battle/battle-init";
-import standardBattle from "../lib/battle/battle-configs/standard";
+import gameFunctions from "../lib/game-functions";
 import { withRouter, RouteComponentProps } from "react-router";
+import GameActions from "../lib/game-actions";
 
 interface Props extends Partial<RouteComponentProps<{}>> {}
 
@@ -35,6 +37,13 @@ const options = [
     }
   },
   {
+    name: "Map",
+    id: "map",
+    onClick: function(props: Props) {
+      props.history.push("/map");
+    }
+  },
+  {
     name: "Options",
     id: "options",
     onClick: function(props: Props) {
@@ -43,35 +52,46 @@ const options = [
   },
   {
     name: "Reset",
+    confirm: true,
     onClick: function() {
       setupState(true);
       Store.update();
+    }
+  },
+  {
+    name: "Save",
+    onClick: function() {
+      GameActions.saveState();
     }
   }
 ];
 
 class Header extends React.Component<Props, {}> {
-  state: {
-    battleInfinite?: boolean;
-  } = {};
-
   constructor(props: any) {
     super(props);
 
     this.startBattle = this.startBattle.bind(this);
+    this.stopBattle = this.stopBattle.bind(this);
     this.toggleBattleInfinite = this.toggleBattleInfinite.bind(this);
-
-    this.state.battleInfinite = false;
+    this.renderLocationActions = this.renderLocationActions.bind(this);
   }
 
   startBattle() {
     const state = Store.getState();
 
+    const location = gameFunctions.getMapLocationByName(state.currentLocation);
+    const battleType = location.battleConfig.type;
+
     state.battle = battleInit(
-      standardBattle(() => {
+      battleType(location.battleConfig, () => {
         // Need to clear out the battle from the state once it is done
         state.battle = null;
         Store.update();
+
+        // Start another battle if the option is selected
+        if (state.battleInfinite) {
+          this.startBattle();
+        }
       })
     );
 
@@ -81,14 +101,69 @@ class Header extends React.Component<Props, {}> {
   stopBattle() {
     const state = Store.getState();
     const battle = state.battle;
+    state.battleInfinite = false;
 
-    battle.stop();
+    battle.stop(false);
+
+    Store.update();
   }
 
   toggleBattleInfinite() {
-    this.setState({
-      battleInfinite: !this.state.battleInfinite
-    });
+    const state = Store.getState();
+    state.battleInfinite = !state.battleInfinite;
+    Store.update();
+  }
+
+  renderLocationActions() {
+    const state = Store.getState();
+    let locationActions: any = null;
+
+    const areaName = (
+      <span
+        style={{
+          float: "left",
+          lineHeight: "30px",
+          fontSize: "20px"
+        }}
+      >
+        {state.currentLocation}
+      </span>
+    );
+
+    const location = gameFunctions.getMapLocationByName(state.currentLocation);
+
+    if (!location.battleConfig) {
+      locationActions = areaName;
+    } else {
+      let stopBattle = null;
+      if (state.battle) {
+        stopBattle = (
+          <Button onClick={this.stopBattle}>
+            <i className="fa fa-times" />
+          </Button>
+        );
+      }
+
+      locationActions = (
+        <div>
+          {areaName}
+          <div style={{ marginLeft: "10px", float: "left" }}>
+            <Button onClick={this.startBattle} disabled={!!state.battle}>
+              {state.battle ? "Battling" : "Start Battle"}
+            </Button>
+            {stopBattle}
+            <Button
+              onClick={this.toggleBattleInfinite}
+              selected={state.battleInfinite}
+            >
+              <i className="fa fa-infinity" />
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    return locationActions;
   }
 
   render() {
@@ -103,40 +178,31 @@ class Header extends React.Component<Props, {}> {
       const name =
         typeof option.name === "function" ? option.name() : option.name;
 
-      headerElements.push(
-        <Button
-          key={i}
-          selected={selected}
-          onClick={option.onClick.bind(this, this.props)}
-        >
-          {name}
-        </Button>
-      );
-    }
-
-    let stopBattle = null;
-    if (state.battle) {
-      stopBattle = (
-        <Button onClick={this.stopBattle}>
-          <i className="fa fa-times" />
-        </Button>
-      );
+      if (option.confirm) {
+        headerElements.push(
+          <ConfirmButton
+            key={i}
+            onConfirm={option.onClick.bind(this, this.props)}
+          >
+            {name}
+          </ConfirmButton>
+        );
+      } else {
+        headerElements.push(
+          <Button
+            key={i}
+            selected={selected}
+            onClick={option.onClick.bind(this, this.props)}
+          >
+            {name}
+          </Button>
+        );
+      }
     }
 
     return (
       <div>
-        <div style={{ float: "right" }}>
-          <Button onClick={this.startBattle} disabled={!!state.battle}>
-            Start Battle
-          </Button>
-          {stopBattle}
-          <Button
-            onClick={this.toggleBattleInfinite}
-            selected={this.state.battleInfinite}
-          >
-            <i className="fa fa-infinity" />
-          </Button>
-        </div>
+        <div style={{ float: "right" }}>{this.renderLocationActions()}</div>
         {headerElements}
       </div>
     );

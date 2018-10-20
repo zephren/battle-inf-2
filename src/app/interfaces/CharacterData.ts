@@ -8,6 +8,9 @@ export default interface ICharacterData {
   statsGrowth: IStats;
   statsTotal: IStats;
   statsActual: IStats;
+  statsGrowthRatioMin: number;
+  statsGrowthRatioMax: number;
+  statsPotential: number;
   equipment: IItemData[];
   exp: number;
   level: number;

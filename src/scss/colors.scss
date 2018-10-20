@@ -51,3 +51,37 @@ $yellow: #e5c45e;
 .r5 {
   color: $orange;
 }
+
+.variation {
+  &.D {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  &.C {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  &.B {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  &.A {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  &.S {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  &.SS {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  &.SSS {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  &.X {
+    color: rgba(255, 255, 255, 1);
+  }
+}

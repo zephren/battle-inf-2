@@ -8,9 +8,10 @@ import HeroActions from "./HeroActions";
 import HeroEquipment from "./HeroEquipment";
 import HeroSkills from "./HeroSkills";
 import Inventory from "./Inventory";
+import Options from "./Options";
+import Map from "./Map";
 import NewItemAction from "./NewItemAction";
 import Town from "./Town";
-import Options from "./Options";
 
 import { HashRouter as Router, Route, Link } from "react-router-dom";
 
@@ -73,26 +74,33 @@ export class Main extends React.Component {
           <div className="main">
             <Header />
 
-            <Route exact path="/heroes" component={Heroes} />
-            <Route
-              exact
-              path="/heroes/:index/equipment"
-              component={HeroEquipment}
-            />
-            <Route exact path="/heroes/:index/skills" component={HeroSkills} />
-            <Route
-              exact
-              path="/heroes/:index/actions"
-              component={HeroActions}
-            />
-            <Route exact path="/inventory" component={Inventory} />
-            <Route
-              exact
-              path="/inventory/newItemAction"
-              component={NewItemAction}
-            />
-            <Route path="/town" component={Town} />
-            <Route path="/options" component={Options} />
+            <div id="main-content" className="main-content">
+              <Route exact path="/heroes" component={Heroes} />
+              <Route
+                exact
+                path="/heroes/:index/equipment"
+                component={HeroEquipment}
+              />
+              <Route
+                exact
+                path="/heroes/:index/skills"
+                component={HeroSkills}
+              />
+              <Route
+                exact
+                path="/heroes/:index/actions"
+                component={HeroActions}
+              />
+              <Route exact path="/inventory" component={Inventory} />
+              <Route
+                exact
+                path="/inventory/newItemAction"
+                component={NewItemAction}
+              />
+              <Route path="/map" render={props => <Map />} />
+              <Route path="/town" component={Town} />
+              <Route path="/options" component={Options} />
+            </div>
           </div>
         </div>
       </Router>

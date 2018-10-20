@@ -9,14 +9,14 @@ interface Props {
   buildingData: any;
 }
 
-export default class Item extends React.Component<Props> {
+export default class TownJob extends React.Component<Props> {
   constructor(props: any) {
     super(props);
 
-    this.build = this.build.bind(this);
+    this.upgrade = this.upgrade.bind(this);
   }
 
-  build() {
+  upgrade() {
     TownActions.buildBuilding(this.props.buildingId);
   }
 
@@ -32,7 +32,7 @@ export default class Item extends React.Component<Props> {
     return (
       <div className="building">
         <div style={{ float: "right" }}>
-          <Button onClick={this.build}>Build One</Button>
+          <Button onClick={this.upgrade}>Upgrade</Button>
         </div>
         <div className="quantity">
           <i className="fa fa-building" /> {quantity}

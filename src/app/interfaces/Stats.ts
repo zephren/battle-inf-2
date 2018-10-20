@@ -19,6 +19,12 @@ export function createStats(): IStats {
   };
 }
 
+const count = Object.keys(createStats()).length;
+
+export function statCount() {
+  return count;
+}
+
 export function cloneStats(stats: IStats): IStats {
   return JSON.parse(JSON.stringify(stats));
 }

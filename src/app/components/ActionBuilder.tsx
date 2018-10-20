@@ -50,6 +50,15 @@ export default class ActionBuilder extends React.Component<Props, {}> {
           }}
           name="action-editor"
           editorProps={{ $blockScrolling: true }}
+          commands={[
+            {
+              name: "save",
+              bindKey: { win: "Ctrl-S", mac: "Cmd-S" },
+              exec: () => {
+                this.save();
+              }
+            }
+          ]}
         />
       </div>
     );

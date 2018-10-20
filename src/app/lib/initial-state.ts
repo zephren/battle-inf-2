@@ -24,8 +24,13 @@ export default (): IState => {
     log: [],
     scrollLogToBottom: false,
     town: {
-      buildings: {}
+      buildings: {},
+      residents: 5,
+      jobAssignments: {
+        woodcutter: 0
+      }
     },
+    mapState: {},
     newItemActionCode: "console.log(item)"
   };
 };

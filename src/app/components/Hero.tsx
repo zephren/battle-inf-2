@@ -5,6 +5,7 @@ import ConfirmButton from "./controls/ConfirmButton";
 import HeroActions from "../lib/hero-actions";
 
 import Stats from "./Stats";
+import StatsGrowth from "./StatsGrowth";
 
 interface Props extends Partial<RouteComponentProps<{}>> {
   index: number;
@@ -40,7 +41,8 @@ class Hero extends React.Component<Props, {}> {
   }
 
   render() {
-    const heroData = this.props.hero.data;
+    const hero = this.props.hero;
+    const heroData = hero.data;
 
     let options = null;
     if (!this.props.noOptions) {
@@ -56,15 +58,23 @@ class Hero extends React.Component<Props, {}> {
       );
     }
 
+    const quality = hero.getQuality();
+
     return (
       <div className="hero">
         <div className="hero-inner">
+          <div className={["variation", quality].join(" ")}>{quality}</div>
           {options}
           <div>
             <span className="hero-name">{heroData.name}</span>
             <span className="level">Lv. {heroData.level}</span>
           </div>
           <Stats stats={heroData.statsTotal} />
+          <div className="clear" />
+          {/* <StatsGrowth stats={heroData.statsGrowth} />
+          <div>Growth Min {heroData.statsGrowthRatioMin.toFixed(2)}</div>
+          <div>Growth Max {heroData.statsGrowthRatioMax.toFixed(2)}</div>
+          <div>Potential {heroData.statsPotential}</div> */}
           <div className="clear" />
         </div>
       </div>

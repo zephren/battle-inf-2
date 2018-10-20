@@ -1,10 +1,14 @@
 import Store from "./store";
 import IItemData from "../interfaces/ItemData";
 import LogActions from "./log-actions";
+import ItemActions from "./item-actions";
+import CHero from "../classes/Hero";
+import gameFunctions from "./game-functions";
 
 const GameActions = {
   saveState: () => {
     localStorage.setItem("saveState", JSON.stringify(Store.getState()));
+    console.log("Game Saved!");
   },
 
   addItemToInventory: (item: IItemData, force: boolean = false) => {
@@ -14,12 +18,18 @@ const GameActions = {
     const heroes = state.heroes;
 
     const getHero = (index: number) => {
-      return JSON.parse(JSON.stringify(heroes[0]));
+      return JSON.parse(JSON.stringify(heroes[index]));
     };
 
-    const equip = (character: any, item: any) => {
-      console.log(character);
+    const equip = (heroData: any, item: any) => {
+      console.log(heroData);
       console.log(item);
+
+      const hero = gameFunctions.getHeroById(heroData.data.id);
+
+      ItemActions.equip.action(hero, item);
+
+      console.log(hero);
     };
 
     if (inventory.length < properties.inventorySize || force) {
@@ -29,9 +39,6 @@ const GameActions = {
         return 0;
       };
 
-      const KEEP = 0;
-      const REJECT = 1;
-
       eval(`
         itemFunction = (item) => {
           const state = undefined;
@@ -39,16 +46,8 @@ const GameActions = {
           const properties = undefined;
 
           ${state.newItemActionCode}
-
-          return KEEP;
         }
       `);
-
-      const result = itemFunction(JSON.parse(JSON.stringify(item)));
-
-      // TODO: how to allow an item to be equipped to a hero?
-      if (result === KEEP) {
-      }
 
       GameActions.saveState();
 

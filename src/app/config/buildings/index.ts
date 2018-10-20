@@ -1,4 +1,5 @@
 import housing from "./housing";
+import inn from "./inn";
 import personalStorage from "./personal-storage";
 import smith from "./smith";
 import trainingGround from "./training-ground";
@@ -8,6 +9,7 @@ const config: {
 } = {
   housing,
   personalStorage,
+  inn,
   smith,
   trainingGround
 };

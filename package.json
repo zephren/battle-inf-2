@@ -21,6 +21,7 @@
     "react": "^16.4.2",
     "react-ace": "^6.1.4",
     "react-dom": "^16.4.2",
+    "react-force-graph": "^1.13.3",
     "react-router-dom": "^4.3.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.22.1",

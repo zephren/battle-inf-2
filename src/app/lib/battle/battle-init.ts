@@ -13,7 +13,8 @@ function battleInit(battleConfig: (options: any) => CBattle) {
     heroTeam
   });
 
-  LogActions.addText(":t:Encounter:t:");
+  LogActions.addText(":t:Encounter - :i:" + state.currentLocation + ":i::t:");
+
   for (const character of battle.teams[1].members) {
     LogActions.addCharacter(character);
   }

@@ -16,7 +16,7 @@ export default class Battle {
     [key: string]: CBattleCharacter;
   } = {};
   memberOrder: MemberOrder[] = [];
-  onFinish: () => void;
+  onFinish: (win: boolean) => void;
 
   constructor(teams: CBattleTeam[]) {
     for (const teamIndex in teams) {
@@ -101,10 +101,14 @@ export default class Battle {
   }
 
   checkState(): () => void {
-    for (const team of this.teams) {
+    for (const index in this.teams) {
+      const team = this.teams[index];
+
       if (!team.isAlive()) {
         LogActions.addText(`:n:${team.name} team has been defeated:n:`);
-        return this.stop;
+
+        // If the index is 1 then the player team won
+        return this.stop.bind(this, parseInt(index) === 1);
       }
     }
 
@@ -145,17 +149,17 @@ export default class Battle {
       const postStateAction = this.checkState();
 
       if (postStateAction) {
-        postStateAction.bind(this)();
+        postStateAction();
       }
     }, 1000);
   }
 
-  stop() {
+  stop(win: boolean) {
     LogActions.addText(":t:Battle Over:t:");
     clearTimeout(this.battleTimer);
 
     if (this.onFinish) {
-      this.onFinish();
+      this.onFinish(win);
     }
   }
 }

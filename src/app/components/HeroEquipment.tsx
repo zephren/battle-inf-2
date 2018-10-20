@@ -1,5 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
+import Button from "./controls/Button";
 import Store from "../lib/store";
 
 import CHero from "../classes/Hero";
@@ -10,14 +11,14 @@ import Item from "./Item";
 import itemActions from "../lib/item-actions";
 
 interface MatchParams {
-  index: number;
+  index: string;
 }
 
 interface Props extends RouteComponentProps<MatchParams> {
   hero: CHero;
 }
 
-export default class HeroEquipment extends React.Component<Props> {
+export default class HeroEquipment extends React.Component<Props, {}> {
   state: {
     index?: number;
     hero?: CHero;
@@ -27,28 +28,35 @@ export default class HeroEquipment extends React.Component<Props> {
     super(props);
 
     this.renderEquipment = this.renderEquipment.bind(this);
+    this.renderInventory = this.renderInventory.bind(this);
+    this.nextHero = this.nextHero.bind(this);
 
-    const index = this.props.match.params.index;
+    const index = parseInt(this.props.match.params.index);
 
     this.state = {
       index
     };
   }
 
+  componentWillReceiveProps(newProps: any) {
+    const index = parseInt(newProps.match.params.index);
+
+    this.setState({
+      index
+    });
+  }
+
   renderInventory() {
     const state = Store.getState();
     const itemElements: object[] = [];
+    const index = this.state.index;
+    const hero = Store.getState().heroes[index];
 
     for (const i in state.inventory) {
       const item = state.inventory[i];
 
       itemElements.push(
-        <Item
-          key={i}
-          item={item}
-          hero={this.state.hero}
-          actions={[itemActions.equip]}
-        />
+        <Item key={i} item={item} hero={hero} actions={[itemActions.equip]} />
       );
     }
 
@@ -56,14 +64,13 @@ export default class HeroEquipment extends React.Component<Props> {
   }
 
   renderEquipmentSlot(name: string, item: IItemData): object {
+    const index = this.state.index;
+    const hero = Store.getState().heroes[index];
+
     return (
       <div>
         <div>{name}</div>
-        <Item
-          item={item}
-          hero={this.state.hero}
-          actions={[itemActions.unequip]}
-        />
+        <Item item={item} hero={hero} actions={[itemActions.unequip]} />
       </div>
     );
   }
@@ -90,13 +97,29 @@ export default class HeroEquipment extends React.Component<Props> {
     );
   }
 
+  nextHero() {
+    const state = Store.getState();
+    let nextIndex = this.state.index + 1;
+
+    if (nextIndex >= state.heroes.length) {
+      nextIndex = 0;
+    }
+
+    this.props.history.push(`/heroes/${nextIndex}/equipment`);
+  }
+
   render() {
     const index = this.state.index;
     const hero = Store.getState().heroes[index];
 
     return (
       <div style={{ width: "100%" }}>
-        <h1>Equipment</h1>
+        <h1>
+          <div style={{ float: "right" }}>
+            <Button onClick={this.nextHero}>Next</Button>
+          </div>
+          Equipment
+        </h1>
 
         <Hero hero={hero} index={this.state.index} />
 

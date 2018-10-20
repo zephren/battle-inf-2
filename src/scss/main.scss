@@ -93,7 +93,15 @@ h1 {
   bottom: 0%;
   left: 32%;
   right: 1%;
-  overflow-y: auto;
+
+  .main-content {
+    position: absolute;
+    top: 50px;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    overflow-y: auto;
+  }
 }
 
 #action-editor {

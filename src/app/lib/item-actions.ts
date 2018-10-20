@@ -1,11 +1,13 @@
 import CHero from "../classes/Hero";
 import IItemData from "../interfaces/ItemData";
 import Store from "./store";
+import GameActions from "./game-actions";
 
 export default {
   unequip: {
     name: "Unequip",
     action: (hero: CHero, item: IItemData) => {
+      console.log(hero);
       const items = hero.unequip(item);
       const state = Store.getState();
 
@@ -14,6 +16,8 @@ export default {
       hero.updateTotalStats();
 
       Store.update();
+
+      GameActions.saveState();
     }
   },
 
@@ -31,13 +35,22 @@ export default {
       hero.updateTotalStats();
 
       Store.update();
+
+      GameActions.saveState();
     }
   },
 
-  sell: {
-    name: "Sell",
+  drop: {
+    name: "Drop",
     action: (hero: CHero, item: IItemData) => {
-      alert("Need to implement");
+      const state = Store.getState();
+
+      const index = state.inventory.indexOf(item);
+      state.inventory.splice(index, 1);
+
+      Store.update();
+
+      GameActions.saveState();
     }
   }
 };

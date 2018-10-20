@@ -26,7 +26,7 @@ export default class Inventory extends React.Component<Props, {}> {
       const item = state.inventory[i];
 
       itemElements.push(
-        <Item key={i} item={item} actions={[ItemActions.sell]} />
+        <Item key={i} item={item} actions={[ItemActions.drop]} />
       );
     }
 

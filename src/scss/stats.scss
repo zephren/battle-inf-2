@@ -18,3 +18,23 @@
     }
   }
 }
+
+.stats-growth {
+  .bar-container {
+    height: 100px;
+    width: 30px;
+    position: relative;
+
+    .bar {
+      width: 100%;
+      background: #ffffff;
+      position: absolute;
+      bottom: 0px;
+    }
+  }
+
+  .stat-name {
+    text-align: center;
+    font-size: 12px;
+  }
+}

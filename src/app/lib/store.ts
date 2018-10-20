@@ -51,7 +51,9 @@ export function setupState(reset = false) {
       log: existingState.log || initialState.log,
       town: existingState.town || initialState.town,
       properties: properties,
-      newItemActionCode: existingState.newItemActionCode
+      newItemActionCode: existingState.newItemActionCode,
+      currentLocation: existingState.currentLocation || "Town",
+      mapState: existingState.mapState || {}
     };
 
     store.setFullState(newState);
