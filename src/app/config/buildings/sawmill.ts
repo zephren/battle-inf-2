@@ -1,6 +1,6 @@
 export default {
-  name: "Training Ground",
-  description: "A place to train the town's heroes",
+  name: "Sawmill",
+  description: "Used to turn wood into planks",
   availableIf: () => {
     return true;
   },

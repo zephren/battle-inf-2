@@ -67,7 +67,7 @@ export default class Main extends React.Component {
     }
 
     if (entry.type === "character") {
-      return <Hero key={index} hero={entry.data.character} noOptions={true} />;
+      return <Hero key={index} hero={entry.data.character} options={[]} />;
     }
 
     return null;

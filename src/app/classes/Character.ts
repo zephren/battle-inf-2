@@ -42,6 +42,8 @@ export default class Character {
     }
 
     this.data = data;
+
+    this.updateTotalStats();
   }
 
   clone() {

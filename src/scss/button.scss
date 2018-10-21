@@ -9,6 +9,11 @@ button {
   padding: 5px 10px;
   cursor: pointer;
 
+  &:hover {
+    background: #ddd;
+    border-top: 2px solid #ddd;
+  }
+
   &.selected {
     color: white;
     background: #999;

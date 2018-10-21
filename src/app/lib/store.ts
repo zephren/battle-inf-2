@@ -56,6 +56,28 @@ export function setupState(reset = false) {
       mapState: existingState.mapState || {}
     };
 
+    if (!newState.town.buildings.inn.data.heroes) {
+      newState.town.buildings.inn.data.heroes = [
+        new CHero(),
+        new CHero(),
+        new CHero(),
+        new CHero()
+      ];
+    } else {
+      const innData = newState.town.buildings.inn.data;
+      const innHeroes: CHero[] = [];
+
+      for (const heroData of innData.heroes) {
+        const hero = new CHero(heroData.data);
+
+        hero.updateTotalStats();
+
+        innHeroes.push(hero);
+      }
+
+      innData.heroes = innHeroes;
+    }
+
     store.setFullState(newState);
   }
 }
@@ -94,5 +116,6 @@ if (!state.log) {
 
 // Best way to set a property on the window
 (<any>window).state = state;
+(<any>window).setupState = setupState;
 
 export default store;

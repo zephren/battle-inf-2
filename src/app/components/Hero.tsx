@@ -10,7 +10,7 @@ import StatsGrowth from "./StatsGrowth";
 interface Props extends Partial<RouteComponentProps<{}>> {
   index: number;
   hero: CHero;
-  noOptions?: boolean;
+  options?: any[];
 }
 
 class Hero extends React.Component<Props, {}> {
@@ -21,6 +21,7 @@ class Hero extends React.Component<Props, {}> {
     this.goSkills = this.goSkills.bind(this);
     this.goActions = this.goActions.bind(this);
     this.remove = this.remove.bind(this);
+    this.buildOptions = this.buildOptions.bind(this);
   }
 
   goEquipment() {
@@ -40,22 +41,64 @@ class Hero extends React.Component<Props, {}> {
     this.props.history.push("/heroes");
   }
 
+  recruitHero() {
+    alert(7);
+  }
+
+  buildOptions(options: any[]) {
+    const optionsElements = [];
+    for (const option of options) {
+      switch (option) {
+        case "equipment":
+          optionsElements.push(
+            <button key="equipment" onClick={this.goEquipment}>
+              Equipment
+            </button>
+          );
+          break;
+        case "skills":
+          optionsElements.push(
+            <button key="skills" onClick={this.goSkills}>
+              Skills
+            </button>
+          );
+          break;
+        case "actions":
+          optionsElements.push(
+            <button key="actions" onClick={this.goActions}>
+              Actions
+            </button>
+          );
+          break;
+        case "remove":
+          optionsElements.push(
+            <ConfirmButton key="remove" onConfirm={this.remove}>
+              <i className="fa fa-trash" />
+            </ConfirmButton>
+          );
+          break;
+        case "recruit":
+          optionsElements.push(
+            <button key="recruit" onClick={this.recruitHero}>
+              Recruit
+            </button>
+          );
+          break;
+      }
+    }
+
+    return <div className="options">{optionsElements}</div>;
+  }
+
   render() {
     const hero = this.props.hero;
     const heroData = hero.data;
 
     let options = null;
-    if (!this.props.noOptions) {
-      options = (
-        <div className="options">
-          <button onClick={this.goEquipment}>Equipment</button>
-          <button onClick={this.goSkills}>Skills</button>
-          <button onClick={this.goActions}>Actions</button>
-          <ConfirmButton onConfirm={this.remove}>
-            <i className="fa fa-trash" />
-          </ConfirmButton>
-        </div>
-      );
+    if (this.props.options) {
+      options = this.buildOptions(this.props.options);
+    } else {
+      options = this.buildOptions(["equipment", "skills", "actions", "remove"]);
     }
 
     const quality = hero.getQuality();
@@ -71,10 +114,10 @@ class Hero extends React.Component<Props, {}> {
           </div>
           <Stats stats={heroData.statsTotal} />
           <div className="clear" />
-          {/* <StatsGrowth stats={heroData.statsGrowth} />
-          <div>Growth Min {heroData.statsGrowthRatioMin.toFixed(2)}</div>
-          <div>Growth Max {heroData.statsGrowthRatioMax.toFixed(2)}</div>
-          <div>Potential {heroData.statsPotential}</div> */}
+          <StatsGrowth stats={heroData.statsGrowth} />
+          <div>Potential {heroData.statsPotential}</div>
+          {/* <div>Growth Min {heroData.statsGrowthRatioMin.toFixed(2)}</div>
+          <div>Growth Max {heroData.statsGrowthRatioMax.toFixed(2)}</div> */}
           <div className="clear" />
         </div>
       </div>

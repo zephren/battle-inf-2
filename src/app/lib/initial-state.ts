@@ -5,7 +5,7 @@ import IState from "../interfaces/State";
 
 export default (): IState => {
   return {
-    heroes: [new CHero(), new CHero(), new CHero()],
+    heroes: [new CHero()],
     inventory: [
       createItem(),
       createItem(),
@@ -24,10 +24,26 @@ export default (): IState => {
     log: [],
     scrollLogToBottom: false,
     town: {
-      buildings: {},
-      residents: 5,
+      lastTick: Date.now(),
+      buildings: {
+        housing: {
+          quantity: 3,
+          data: {}
+        },
+        sawmill: {
+          quantity: 1,
+          data: {}
+        },
+        inn: {
+          quantity: 1,
+          data: {}
+        }
+      },
       jobAssignments: {
         woodcutter: 0
+      },
+      resources: {
+        wood: 10
       }
     },
     mapState: {},

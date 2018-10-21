@@ -98,7 +98,8 @@ export class Main extends React.Component {
                 component={NewItemAction}
               />
               <Route path="/map" render={props => <Map />} />
-              <Route path="/town" component={Town} />
+              <Route exact path="/town" component={Town} />
+              <Route exact path="/town/:buildingId" component={Town} />
               <Route path="/options" component={Options} />
             </div>
           </div>
