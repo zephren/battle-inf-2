@@ -1,11 +1,10 @@
 import * as React from "react";
 import Button from "./controls/Button";
 import ConfirmButton from "./controls/ConfirmButton";
-import Store, { setupState } from "../lib/store";
+import Store, { setupState } from "../store";
 import battleInit from "../lib/battle/battle-init";
 import gameFunctions from "../lib/game-functions";
 import { withRouter, RouteComponentProps } from "react-router";
-import GameActions from "../lib/game-actions";
 
 interface Props extends Partial<RouteComponentProps<{}>> {}
 
@@ -61,7 +60,7 @@ const options = [
   {
     name: "Save",
     onClick: function() {
-      GameActions.saveState();
+      Store.saveState();
     }
   }
 ];

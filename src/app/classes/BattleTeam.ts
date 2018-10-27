@@ -2,7 +2,7 @@ import CCharacter from "./Character";
 import CBattleCharacter from "./BattleCharacter";
 import BattleCharacter from "./BattleCharacter";
 
-export default class BattleTeam {
+export default class CBattleTeam {
   members: CBattleCharacter[];
   name: string = "Unnamed Team";
   aliveMembers: CBattleCharacter[];
@@ -10,6 +10,10 @@ export default class BattleTeam {
 
   membersById: {
     [key: string]: CBattleCharacter;
+  } = {};
+
+  originalMembersById: {
+    [key: string]: CCharacter;
   } = {};
 
   constructor(members: CCharacter[]) {
@@ -26,6 +30,7 @@ export default class BattleTeam {
 
       this.members.push(newMember);
       this.membersById[newMember.data.id] = newMember;
+      this.originalMembersById[newMember.data.id] = member;
     }
 
     this.aliveMembers = this.members.slice();

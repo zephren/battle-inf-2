@@ -1,7 +1,7 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 import Button from "./controls/Button";
-import TownActions from "../lib/town-actions";
+import TownActions from "../actions/town-actions";
 import resources from "../config/resources";
 import GameFunctions from "../lib/game-functions";
 import TownBuildings from "./town-buildings";

@@ -1,4 +1,4 @@
-import Store from "../../lib/store";
+import Store from "../../store";
 import gameFunctions from "../../lib/game-functions";
 
 export default {

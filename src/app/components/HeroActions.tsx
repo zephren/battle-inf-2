@@ -1,8 +1,7 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
-import Store from "../lib/store";
-import CHero from "../classes/Hero";
-import GameActions from "../lib/game-actions";
+import Store from "../store";
+import CCharacter from "../classes/Character";
 
 import Hero from "./Hero";
 import ActionBuilder from "./ActionBuilder";
@@ -12,7 +11,7 @@ interface MatchParams {
 }
 
 interface Props extends RouteComponentProps<MatchParams> {
-  hero: CHero;
+  hero: CCharacter;
 }
 
 export default class HeroActions extends React.Component<Props> {
@@ -30,7 +29,7 @@ export default class HeroActions extends React.Component<Props> {
           saveCode={newCode => {
             hero.data.battlActionCode = newCode;
 
-            GameActions.saveState();
+            Store.saveState();
           }}
         />
       </div>

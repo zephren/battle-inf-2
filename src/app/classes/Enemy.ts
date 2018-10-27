@@ -1,6 +1,6 @@
 import CBattleCharacter from "./BattleCharacter";
 
-export default class Enemy extends CBattleCharacter {
+export default class CEnemy extends CBattleCharacter {
   constructor(
     enemyConfig: any,
     battleFunction: (context: any) => void,

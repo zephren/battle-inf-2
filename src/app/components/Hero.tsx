@@ -1,16 +1,18 @@
 import * as React from "react";
-import CHero from "../classes/Hero";
+import CCharacter from "../classes/Character";
 import { withRouter, RouteComponentProps } from "react-router";
 import ConfirmButton from "./controls/ConfirmButton";
-import HeroActions from "../lib/hero-actions";
+import HeroActions from "../actions/hero-actions";
 
 import Stats from "./Stats";
 import StatsGrowth from "./StatsGrowth";
+import GameActions from "../actions/game-actions";
 
 interface Props extends Partial<RouteComponentProps<{}>> {
   index: number;
-  hero: CHero;
+  hero: CCharacter;
   options?: any[];
+  debug: boolean;
 }
 
 class Hero extends React.Component<Props, {}> {
@@ -22,6 +24,7 @@ class Hero extends React.Component<Props, {}> {
     this.goActions = this.goActions.bind(this);
     this.remove = this.remove.bind(this);
     this.buildOptions = this.buildOptions.bind(this);
+    this.recruitHero = this.recruitHero.bind(this);
   }
 
   goEquipment() {
@@ -42,7 +45,7 @@ class Hero extends React.Component<Props, {}> {
   }
 
   recruitHero() {
-    alert(7);
+    GameActions.recruitHero(this.props.hero);
   }
 
   buildOptions(options: any[]) {
@@ -101,6 +104,19 @@ class Hero extends React.Component<Props, {}> {
       options = this.buildOptions(["equipment", "skills", "actions", "remove"]);
     }
 
+    let debugDisplay = null;
+    if (true || this.props.debug) {
+      debugDisplay = (
+        <div>
+          <div className="clear" />
+          <StatsGrowth stats={heroData.statsGrowth} />
+          <div>Potential {heroData.statsPotential}</div>
+          <div>Growth Min {heroData.statsGrowthRatioMin.toFixed(2)}</div>
+          <div>Growth Max {heroData.statsGrowthRatioMax.toFixed(2)}</div>
+        </div>
+      );
+    }
+
     const quality = hero.getQuality();
 
     return (
@@ -113,11 +129,7 @@ class Hero extends React.Component<Props, {}> {
             <span className="level">Lv. {heroData.level}</span>
           </div>
           <Stats stats={heroData.statsTotal} />
-          <div className="clear" />
-          <StatsGrowth stats={heroData.statsGrowth} />
-          <div>Potential {heroData.statsPotential}</div>
-          {/* <div>Growth Min {heroData.statsGrowthRatioMin.toFixed(2)}</div>
-          <div>Growth Max {heroData.statsGrowthRatioMax.toFixed(2)}</div> */}
+          {debugDisplay}
           <div className="clear" />
         </div>
       </div>

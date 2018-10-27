@@ -11,7 +11,7 @@ const totalAvailableSlots: {
   legs: 1
 };
 
-export default class Equipment {
+export default class CEquipment {
   items: IItem[];
 
   constructor(items: IItem[]) {

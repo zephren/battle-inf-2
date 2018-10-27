@@ -1,6 +1,6 @@
 import * as React from "react";
-import Store from "../lib/store";
-import ItemActions from "../lib/item-actions";
+import Store from "../store";
+import ItemActions from "../actions/item-actions";
 import { RouteComponentProps } from "react-router";
 
 import Item from "./Item";

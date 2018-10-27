@@ -1,13 +1,11 @@
-import CHero from "../classes/Hero";
+import CCharacter from "../classes/Character";
 import IItemData from "../interfaces/ItemData";
-import Store from "./store";
-import GameActions from "./game-actions";
+import Store from "../store";
 
 export default {
   unequip: {
     name: "Unequip",
-    action: (hero: CHero, item: IItemData) => {
-      console.log(hero);
+    action: (hero: CCharacter, item: IItemData) => {
       const items = hero.unequip(item);
       const state = Store.getState();
 
@@ -17,13 +15,13 @@ export default {
 
       Store.update();
 
-      GameActions.saveState();
+      Store.saveState();
     }
   },
 
   equip: {
     name: "Equip",
-    action: (hero: CHero, item: IItemData) => {
+    action: (hero: CCharacter, item: IItemData) => {
       const items = hero.equip(item);
       const state = Store.getState();
 
@@ -36,13 +34,13 @@ export default {
 
       Store.update();
 
-      GameActions.saveState();
+      Store.saveState();
     }
   },
 
   drop: {
     name: "Drop",
-    action: (hero: CHero, item: IItemData) => {
+    action: (hero: CCharacter, item: IItemData) => {
       const state = Store.getState();
 
       const index = state.inventory.indexOf(item);
@@ -50,7 +48,7 @@ export default {
 
       Store.update();
 
-      GameActions.saveState();
+      Store.saveState();
     }
   }
 };

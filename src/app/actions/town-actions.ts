@@ -1,6 +1,5 @@
-import Store from "./store";
-import GameActions from "./game-actions";
-import GameFunctions from "./game-functions";
+import Store from "../store";
+import GameFunctions from "../lib/game-functions";
 import jobs from "../config/jobs";
 
 export default {
@@ -20,7 +19,7 @@ export default {
     if (GameFunctions.canAffordBuilding(buildingId, building.quantity)) {
       building.quantity += 1;
 
-      GameActions.saveState();
+      Store.saveState();
     }
 
     Store.update();

@@ -1,7 +1,7 @@
 import * as React from "react";
 import Button from "./controls/Button";
-import Store from "../lib/store";
-import TownActions from "../lib/town-actions";
+import Store from "../store";
+import TownActions from "../actions/town-actions";
 import GameFunctions from "../lib/game-functions";
 
 interface Props {

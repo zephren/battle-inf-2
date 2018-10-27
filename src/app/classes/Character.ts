@@ -1,13 +1,20 @@
 import ICharacterData from "../interfaces/CharacterData";
+import IItemData from "../interfaces/ItemData";
+import CEquipment from "./Equipment";
+import { createItem } from "../interfaces/ItemData";
+import nameGenerator from "../lib/name-generator";
 import { createStats, cloneStats, statCount } from "../interfaces/Stats";
 import { v4 as uuid } from "uuid";
 import ArrayExtra from "../lib/array-extra";
 import MathExtra from "../lib/math-extra";
 
+const initialBattleActionCode = `const target = battle.targetOpponent();
+battle.attack(target);`;
+
 // Blank for fillter, it will never be shown
 const qualities = ["", "D", "C", "B", "A", "S", "SS", "SSS", "X"];
 
-export default class Character {
+export default class CCharacter {
   data: ICharacterData;
 
   constructor(data: ICharacterData = null) {
@@ -46,9 +53,30 @@ export default class Character {
     this.updateTotalStats();
   }
 
+  static createHero(initalData: any = null) {
+    const hero = new CCharacter(initalData);
+
+    const data = hero.data;
+
+    data.name =
+      nameGenerator.randomName(2, 5) + " " + nameGenerator.randomName(2, 5);
+    data.level = 1;
+    data.battlActionCode = "";
+
+    const equipment = new CEquipment(data.equipment);
+
+    equipment.equip(createItem({ type: "head" }));
+    equipment.equip(createItem({ type: "body" }));
+    equipment.equip(createItem({ type: "legs" }));
+
+    data.battlActionCode = initialBattleActionCode;
+
+    return hero;
+  }
+
   clone() {
     // Copy the data
-    const character = new Character(JSON.parse(JSON.stringify(this.data)));
+    const character = new CCharacter(JSON.parse(JSON.stringify(this.data)));
 
     return character;
   }
@@ -66,8 +94,8 @@ export default class Character {
     ArrayExtra.shuffleArray(statNames);
 
     const factor = 3;
-    const magnitude = Math.pow(10, factor);
-    const startMin = MathExtra.randomFloat(0, magnitude);
+    const magnitude = Math.pow(10, factor); // A lower value here means higher stats
+    const startMin = MathExtra.randomFloat(0, magnitude); // A lower value here means higher stats
 
     const rMin = MathExtra.randomFloat(startMin, magnitude);
     const ratioMin = 1 - Math.pow(rMin, 1 / factor) / 10;
@@ -75,7 +103,7 @@ export default class Character {
     const rMax = MathExtra.randomFloat(0, rMin);
     const ratioMax = 1 - Math.pow(rMax, 1 / factor) / 10;
 
-    console.log({ rMin: rMin.toFixed(2), rMax: rMax.toFixed(2) });
+    // console.log({ rMin: rMin.toFixed(2), rMax: rMax.toFixed(2) });
 
     let potential = 0;
     for (const stat of statNames) {
@@ -96,6 +124,10 @@ export default class Character {
   updateTotalStats() {
     this.data.statsTotal = JSON.parse(JSON.stringify(this.data.statsBase));
 
+    for (const stat in this.data.statsTotal) {
+      this.data.statsTotal[stat] = Math.round(this.data.statsTotal[stat]);
+    }
+
     for (const item of this.data.equipment) {
       for (const i in item.stats) {
         this.data.statsTotal[i] += item.stats[i];
@@ -105,5 +137,21 @@ export default class Character {
 
   setActualStats() {
     this.data.statsActual = cloneStats(this.data.statsTotal);
+  }
+
+  getEquipment(): CEquipment {
+    return new CEquipment(this.data.equipment);
+  }
+
+  equip(item: IItemData): IItemData[] {
+    const equipment = this.getEquipment();
+    const items = equipment.equip(item);
+    return items;
+  }
+
+  unequip(item: IItemData): IItemData[] {
+    const equipment = this.getEquipment();
+    const items = equipment.unequip(item);
+    return items;
   }
 }

@@ -1,27 +1,27 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import Button from "./controls/Button";
-import Store from "../lib/store";
+import Store from "../store";
 
-import CHero from "../classes/Hero";
+import CCharacter from "../classes/Character";
 import IItemData from "../interfaces/ItemData";
 
 import Hero from "./Hero";
 import Item from "./Item";
-import itemActions from "../lib/item-actions";
+import itemActions from "../actions/item-actions";
 
 interface MatchParams {
   index: string;
 }
 
 interface Props extends RouteComponentProps<MatchParams> {
-  hero: CHero;
+  hero: CCharacter;
 }
 
 export default class HeroEquipment extends React.Component<Props, {}> {
   state: {
     index?: number;
-    hero?: CHero;
+    hero?: CCharacter;
   } = {};
 
   constructor(props: any) {

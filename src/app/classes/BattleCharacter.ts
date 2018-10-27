@@ -1,10 +1,10 @@
 import ICharacterData from "../interfaces/CharacterData";
 import CCharacter from "../classes/Character";
-import { createStats } from "../interfaces/Stats";
-import LogActions from "../lib/log-actions";
-import store from "../lib/store";
+import Istats, { createStats } from "../interfaces/Stats";
+import LogActions from "../actions/log-actions";
+import store from "../store";
 
-export default class BattleCharacter extends CCharacter {
+export default class CBattleCharacter extends CCharacter {
   teamIndex: number;
   battleFunction: (context: any) => void;
 
@@ -14,7 +14,7 @@ export default class BattleCharacter extends CCharacter {
   }
 
   clone() {
-    const battleCharacter: BattleCharacter = <BattleCharacter>super.clone();
+    const battleCharacter: CBattleCharacter = <CBattleCharacter>super.clone();
 
     battleCharacter.teamIndex = this.teamIndex;
     battleCharacter.battleFunction = this.battleFunction;

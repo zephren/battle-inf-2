@@ -1,8 +1,8 @@
-import Store from "./store";
-import CHero from "../classes/Hero";
+import Store from "../store";
+import CCharacter from "../classes/Character";
 
 export default {
-  removeHero: (hero: CHero) => {
+  removeHero: (hero: CCharacter) => {
     const state = Store.getState();
 
     const index = state.heroes.indexOf(hero);

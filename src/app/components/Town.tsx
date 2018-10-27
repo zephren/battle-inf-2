@@ -4,7 +4,7 @@ import TownBuilding from "./TownBuilding";
 import buildings from "../config/buildings";
 import jobs from "../config/jobs";
 import resources from "../config/resources";
-import Store from "../lib/store";
+import Store from "../store";
 import TownJob from "./TownJob";
 import GameFunctions from "../lib/game-functions";
 import TownBuildings from "./town-buildings";
@@ -124,6 +124,7 @@ export default class Town extends React.Component<Props> {
             {Math.floor((town.lastTick + 60000 - Date.now()) / 1000)}
           </div>
         </div>
+
         <h1>Town</h1>
 
         <div style={{ clear: "both" }} />

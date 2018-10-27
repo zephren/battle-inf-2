@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
-import Store from "../lib/store";
-import CHero from "../classes/Hero";
+import Store from "../store";
+import CCharacter from "../classes/Character";
 
 import Hero from "./Hero";
 
@@ -10,7 +10,7 @@ interface MatchParams {
 }
 
 interface Props extends RouteComponentProps<MatchParams> {
-  hero: CHero;
+  hero: CCharacter;
 }
 
 export default class HeroSkills extends React.Component<Props> {

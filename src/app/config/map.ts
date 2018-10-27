@@ -1,7 +1,7 @@
 import battleConfigs from "./battle-configs";
 import enemyTypes from "./enemy-types";
-import Store from "../lib/store";
-import MapActions from "../lib/map-actions";
+import Store from "../store";
+import MapActions from "../actions/map-actions";
 
 const mapState = Store.getState().mapState;
 

@@ -2,11 +2,11 @@
 /// <reference path="../typescript-definitions/ReactForceGraph.d.ts" />
 
 import * as React from "react";
-import Store from "../lib/store";
+import Store from "../store";
 import { ForceGraph2D } from "react-force-graph";
 import { forceLink, forceCollide } from "d3-force";
 import map from "../config/map";
-import GameActions from "../lib/game-actions";
+import GameFunctions from "../lib/game-functions";
 
 export default class Map extends React.Component {
   state: {
@@ -82,8 +82,7 @@ export default class Map extends React.Component {
     state.currentLocation = node.id;
 
     Store.update();
-
-    GameActions.saveState();
+    Store.saveState();
   }
 
   buildNodesLinks() {

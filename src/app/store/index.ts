@@ -1,9 +1,8 @@
 import * as React from "react";
 import createInitialState from "./initial-state";
 import IState from "../interfaces/State";
-import CHero from "../classes/Hero";
+import CCharacter from "../classes/Character";
 import IProperties from "../interfaces/Properties";
-import initialState from "./initial-state";
 
 let topLevelComponent: React.Component = null;
 let state: IState = {};
@@ -33,11 +32,17 @@ export function setupState(reset = false) {
     }
 
     for (const heroData of existingState.heroes) {
-      const hero = new CHero(heroData.data);
+      const hero = new CCharacter(heroData.data);
 
       hero.updateTotalStats();
 
       heroes.push(hero);
+    }
+
+    for (const record of existingState.log) {
+      if (record.type === "character") {
+        record.data.character = new CCharacter(record.data.character.data);
+      }
     }
 
     const properties = existingState.properties || <IProperties>{};
@@ -56,19 +61,13 @@ export function setupState(reset = false) {
       mapState: existingState.mapState || {}
     };
 
-    if (!newState.town.buildings.inn.data.heroes) {
-      newState.town.buildings.inn.data.heroes = [
-        new CHero(),
-        new CHero(),
-        new CHero(),
-        new CHero()
-      ];
-    } else {
-      const innData = newState.town.buildings.inn.data;
-      const innHeroes: CHero[] = [];
+    const innData = newState.town.buildings.inn.data;
+
+    if (innData.heroes) {
+      const innHeroes: CCharacter[] = [];
 
       for (const heroData of innData.heroes) {
-        const hero = new CHero(heroData.data);
+        const hero = new CCharacter(heroData.data);
 
         hero.updateTotalStats();
 
@@ -103,6 +102,11 @@ class Store {
 
   forceUpdate() {
     topLevelComponent.forceUpdate();
+  }
+
+  saveState() {
+    localStorage.setItem("saveState", JSON.stringify(state));
+    console.log("Game Saved!");
   }
 }
 

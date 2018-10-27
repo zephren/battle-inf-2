@@ -1,7 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
-import Store from "../lib/store";
-import GameActions from "../lib/game-actions";
+import Store from "../store";
 
 import ActionBuilder from "./ActionBuilder";
 
@@ -21,7 +20,7 @@ export default class NewItemAction extends React.Component<Props> {
           saveCode={newCode => {
             state.newItemActionCode = newCode;
 
-            GameActions.saveState();
+            Store.saveState();
           }}
         />
       </div>

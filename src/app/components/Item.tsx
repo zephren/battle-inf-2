@@ -1,5 +1,5 @@
 import * as React from "react";
-import CHero from "../classes/Hero";
+import CCharacter from "../classes/Character";
 import IItemData from "../interfaces/ItemData";
 import Stats from "./Stats";
 
@@ -8,12 +8,12 @@ import Hero from "./Hero";
 
 interface IItemAction {
   name: string;
-  action(hero: CHero, item: IItemData): void;
+  action(hero: CCharacter, item: IItemData): void;
 }
 
 interface Props {
   item: IItemData;
-  hero?: CHero;
+  hero?: CCharacter;
   actions?: IItemAction[];
 }
 

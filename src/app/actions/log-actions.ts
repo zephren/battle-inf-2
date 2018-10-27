@@ -1,12 +1,15 @@
-import Store from "./store";
+import Store from "../store";
 import CCharacter from "../classes/Character";
-import GameActions from "./game-actions";
 
 function addLogEntry(entry: any) {
   const state = Store.getState();
   const log = state.log;
 
   log.push(entry);
+
+  if (log.length > 100) {
+    log.splice(0, log.length - 100);
+  }
 
   state.scrollLogToBottom = true;
 
@@ -17,7 +20,7 @@ export default {
   clearLog: () => {
     Store.getState().log = [];
     Store.update();
-    GameActions.saveState();
+    Store.saveState();
   },
 
   addText: (entry: string) => {
@@ -33,6 +36,16 @@ export default {
     addLogEntry({
       type: "character",
       data: {
+        character: character
+      }
+    });
+  },
+
+  addGains: (gains: any, character: CCharacter) => {
+    addLogEntry({
+      type: "gains",
+      data: {
+        gains: gains,
         character: character
       }
     });

@@ -1,11 +1,10 @@
 import { createItem } from "../interfaces/ItemData";
-import CHero from "../classes/Hero";
-
 import IState from "../interfaces/State";
+import CCharacter from "../classes/Character";
 
 export default (): IState => {
   return {
-    heroes: [new CHero()],
+    heroes: [CCharacter.createHero()],
     inventory: [
       createItem(),
       createItem(),
@@ -36,7 +35,9 @@ export default (): IState => {
         },
         inn: {
           quantity: 1,
-          data: {}
+          data: {
+            lastTick: Date.now()
+          }
         }
       },
       jobAssignments: {

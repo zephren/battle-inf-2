@@ -13,6 +13,9 @@ equipment elements
 monster elements
   ex mountain has ice element
   volcano has fire
+  
 
+town "prestiege"
+  determines the quality of heroes that come to the town
 
 send heros on quests in groups

@@ -1,26 +1,35 @@
+import CCharacter from "./Character";
 import CBattleTeam from "./BattleTeam";
 import CBattleCharacter from "./BattleCharacter";
-import BattleApi from "../lib/battle/battle-api";
-import Hero from "./Hero";
-import LogActions from "../lib/log-actions";
+import BattleApi, { IBattleContext } from "../lib/battle/battle-api";
+import LogActions from "../actions/log-actions";
+import BattleGains from "./BattleGains";
 
 interface MemberOrder {
   id: string;
   value: number;
 }
 
-export default class Battle {
+export default class CBattle {
   teams: CBattleTeam[];
   battleTimer: any;
   members: {
     [key: string]: CBattleCharacter;
   } = {};
+  originalMembers: {
+    [key: string]: CCharacter;
+  } = {};
   memberOrder: MemberOrder[] = [];
+  battleContext: IBattleContext;
   onFinish: (win: boolean) => void;
 
   constructor(teams: CBattleTeam[]) {
     for (const teamIndex in teams) {
       const team = teams[teamIndex];
+
+      for (const memberId in team.originalMembersById) {
+        this.originalMembers[memberId] = team.originalMembersById[memberId];
+      }
 
       for (const member of team.members) {
         member.teamIndex = parseInt(teamIndex);
@@ -118,15 +127,19 @@ export default class Battle {
   start() {
     LogActions.addText(":t:Battle Start:t:");
 
-    const battleApi = BattleApi({
-      teams: this.teams
-    });
+    const battleGains = new BattleGains(this.members);
+    this.battleContext = {
+      teams: this.teams,
+      battleGains: battleGains
+    };
+
+    const battleApi = BattleApi(this.battleContext);
 
     this.battleTimer = setInterval(() => {
       const member = this.getNextMember();
 
-      console.log("Battle Turn", member.data.name);
-      console.log("member", member);
+      // console.log("Battle Turn", member.data.name);
+      // console.log("member", member);
 
       if (member.teamIndex === 0) {
         battleApi._setCurrentTeam(this.teams[0]);
@@ -135,6 +148,8 @@ export default class Battle {
         battleApi._setCurrentTeam(this.teams[1]);
         battleApi._setOpponentTeam(this.teams[0]);
       }
+
+      battleGains.addGainWithMod("dex", member, Math.sqrt(1));
 
       battleApi._setCurrentCharacter(member);
 
@@ -158,8 +173,27 @@ export default class Battle {
     LogActions.addText(":t:Battle Over:t:");
     clearTimeout(this.battleTimer);
 
+    this.addGains(win);
+
     if (this.onFinish) {
       this.onFinish(win);
+    }
+  }
+
+  addGains(win: boolean) {
+    for (const id in this.battleContext.battleGains.battleGains) {
+      const gains = this.battleContext.battleGains.battleGains[id];
+      const character = this.originalMembers[id];
+
+      for (const stat in gains) {
+        // Modify gains based on a win or loss
+        gains[stat] = gains[stat] * (win ? 1 : 0.1);
+        character.data.statsBase[stat] += gains[stat];
+      }
+
+      character.updateTotalStats();
+
+      LogActions.addGains(gains, character);
     }
   }
 }

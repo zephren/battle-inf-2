@@ -1,16 +1,11 @@
-import Store from "./store";
+import Store from "../store";
 import IItemData from "../interfaces/ItemData";
 import LogActions from "./log-actions";
 import ItemActions from "./item-actions";
-import CHero from "../classes/Hero";
-import gameFunctions from "./game-functions";
+import CCharacter from "../classes/Character";
+import GameFunctions from "../lib/game-functions";
 
 const GameActions = {
-  saveState: () => {
-    localStorage.setItem("saveState", JSON.stringify(Store.getState()));
-    console.log("Game Saved!");
-  },
-
   addItemToInventory: (item: IItemData, force: boolean = false) => {
     const state = Store.getState();
     const inventory = state.inventory;
@@ -22,14 +17,9 @@ const GameActions = {
     };
 
     const equip = (heroData: any, item: any) => {
-      console.log(heroData);
-      console.log(item);
-
-      const hero = gameFunctions.getHeroById(heroData.data.id);
+      const hero = GameFunctions.getHeroById(heroData.data.id);
 
       ItemActions.equip.action(hero, item);
-
-      console.log(hero);
     };
 
     if (inventory.length < properties.inventorySize || force) {
@@ -49,11 +39,26 @@ const GameActions = {
         }
       `);
 
-      GameActions.saveState();
+      Store.saveState();
 
       Store.update();
     } else {
       LogActions.addText(`:i:Inventory is full:i:`);
+    }
+  },
+
+  recruitHero(hero: CCharacter) {
+    const state = Store.getState();
+    const town = state.town;
+    const heroes = state.heroes;
+
+    if (GameFunctions.townHasFreeHousing()) {
+      heroes.push(hero);
+
+      const index = town.buildings.inn.data.heroes.indexOf(hero);
+      town.buildings.inn.data.heroes.splice(index, 1);
+
+      Store.update();
     }
   }
 };

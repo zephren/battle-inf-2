@@ -1,7 +1,7 @@
-import Store from "../../lib/store";
-import GameActions from "../../lib/game-actions";
+import GameFunctions from "../../lib/game-functions";
+import GameActions from "../../actions/game-actions";
 import { createItem } from "../../interfaces/ItemData";
-import LogActions from "../../lib/log-actions";
+import LogActions from "../../actions/log-actions";
 import CBattle from "../../classes/Battle";
 import CBattleTeam from "../../classes/BattleTeam";
 import CEnemy from "../../classes/Enemy";
@@ -59,8 +59,6 @@ export default function(
       if (onFinish) {
         onFinish();
       }
-
-      GameActions.saveState();
     };
 
     return battle;

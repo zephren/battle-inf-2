@@ -1,9 +1,10 @@
 import * as React from "react";
-import Store from "../lib/store";
+import Store from "../store";
 import ILogEntry from "../interfaces/LogEntry";
 import Hero from "./Hero";
-import LogActions from "../lib/log-actions";
+import LogActions from "../actions/log-actions";
 import Button from "./controls/Button";
+import HeroGains from "./HeroGains";
 
 export default class Main extends React.Component {
   messagesEnd: any = null;
@@ -49,12 +50,12 @@ export default class Main extends React.Component {
 
       result = result.replace(
         /:def:(.*?):def:/g,
-        `<d class="log-note"><table style="width:100%"><tbody><tr><td>$1</td><td class="color-red" style="text-align:right"><i class="fa fa-times fa-2x"/></td></tr></tbody></table>`
+        `<b class="log-note"><table style="width:100%"><tbody><tr><td>$1</td><td class="color-red" style="text-align:right"><i class="fa fa-times fa-2x"/></td></tr></tbody></table></b>`
       );
 
       result = result.replace(
         /:item:(.*?):item:/g,
-        `<d class="log-note"><table style="width:100%"><tbody><tr><td>$1</td><td class="color-green" style="text-align:right"><i class="fa fa-gift fa-2x"/></td></tr></tbody></table>`
+        `<b class="log-note"><table style="width:100%"><tbody><tr><td>$1</td><td class="color-green" style="text-align:right"><i class="fa fa-gift fa-2x"/></td></tr></tbody></table></b>`
       );
 
       return (
@@ -68,6 +69,16 @@ export default class Main extends React.Component {
 
     if (entry.type === "character") {
       return <Hero key={index} hero={entry.data.character} options={[]} />;
+    }
+
+    if (entry.type === "gains") {
+      return (
+        <HeroGains
+          key={index}
+          hero={entry.data.character}
+          gains={entry.data.gains}
+        />
+      );
     }
 
     return null;

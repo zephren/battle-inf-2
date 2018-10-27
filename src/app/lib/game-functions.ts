@@ -1,4 +1,4 @@
-import Store from "./store";
+import Store from "../store";
 import map from "../config/map";
 import buildings from "../config/buildings";
 
@@ -97,6 +97,21 @@ const GameFunctions = {
     town.resources[resourceId] = newAmount;
 
     return amount;
+  },
+
+  townUnusedHousingCount() {
+    const state = Store.getState();
+    const town = state.town;
+    const heroes = state.heroes;
+
+    return (
+      town.buildings.housing.quantity -
+      (GameFunctions.getTownJobAssignmentCount() + heroes.length)
+    );
+  },
+
+  townHasFreeHousing() {
+    return this.townUnusedHousingCount() > 0;
   }
 };
 

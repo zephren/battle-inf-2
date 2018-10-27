@@ -1,5 +1,5 @@
 import CBattleCharacter from "../../classes/BattleCharacter";
-import LogActions from "../log-actions";
+import LogActions from "../../actions/log-actions";
 import statDisplay from "./stat-display";
 
 export default function(
@@ -16,6 +16,10 @@ export default function(
     damage = 1;
   }
 
+  if (damage > defender.data.statsActual.hp) {
+    damage = defender.data.statsActual.hp;
+  }
+
   const result = defender.applyDamage(damage);
 
   LogActions.addText(
@@ -27,4 +31,6 @@ export default function(
   if (result) {
     result();
   }
+
+  return damage;
 }

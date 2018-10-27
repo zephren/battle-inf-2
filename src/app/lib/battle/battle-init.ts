@@ -1,6 +1,6 @@
-import Store from "../store";
+import Store from "../../store";
 import CBattleTeam from "../../classes/BattleTeam";
-import LogActions from "../log-actions";
+import LogActions from "../../actions/log-actions";
 import CBattle from "../../classes/Battle";
 
 function battleInit(battleConfig: (options: any) => CBattle) {

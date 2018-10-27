@@ -1,5 +1,5 @@
 import * as React from "react";
-import Store from "../lib/store";
+import Store from "../store";
 
 import Hero from "./Hero";
 
