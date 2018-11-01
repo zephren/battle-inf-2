@@ -129,6 +129,23 @@ class Hero extends React.Component<Props, {}> {
             <span className="level">Lv. {heroData.level}</span>
           </div>
           <Stats stats={heroData.statsTotal} />
+          <div className="clear" />
+          <div className="exp">
+            <div className="bar-outer">
+              <div
+                className="bar-inner"
+                style={{
+                  width:
+                    (heroData.exp * 100) / hero.getExpForLevel(heroData.level) +
+                    "%"
+                }}
+              />
+            </div>
+            <div className="numbers">
+              {heroData.exp.toFixed(2)} / {hero.getExpForLevel(heroData.level)}{" "}
+              EXP
+            </div>
+          </div>
           {debugDisplay}
           <div className="clear" />
         </div>

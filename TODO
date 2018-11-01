@@ -13,7 +13,19 @@ equipment elements
 monster elements
   ex mountain has ice element
   volcano has fire
-  
+
+
+
+
+
+battle hp/sp display of all members
+
+building size and quality (or some other word)
+  size - how much it can hold (ex, heroes, sawmill workers)
+  quality - quality of the product (ex, hero potential, lumber production amount)
+
+exp
+  gained for winning a battle lost for losing or quitting a battle
 
 town "prestiege"
   determines the quality of heroes that come to the town

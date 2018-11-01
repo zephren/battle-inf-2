@@ -119,6 +119,7 @@ if (!state.log) {
 }
 
 // Best way to set a property on the window
+(<any>window).store = store;
 (<any>window).state = state;
 (<any>window).setupState = setupState;
 

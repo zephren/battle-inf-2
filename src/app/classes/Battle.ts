@@ -3,7 +3,6 @@ import CBattleTeam from "./BattleTeam";
 import CBattleCharacter from "./BattleCharacter";
 import BattleApi, { IBattleContext } from "../lib/battle/battle-api";
 import LogActions from "../actions/log-actions";
-import BattleGains from "./BattleGains";
 
 interface MemberOrder {
   id: string;
@@ -21,6 +20,7 @@ export default class CBattle {
   } = {};
   memberOrder: MemberOrder[] = [];
   battleContext: IBattleContext;
+  battleApi: any = null;
   onFinish: (win: boolean) => void;
 
   constructor(teams: CBattleTeam[]) {
@@ -127,73 +127,66 @@ export default class CBattle {
   start() {
     LogActions.addText(":t:Battle Start:t:");
 
-    const battleGains = new BattleGains(this.members);
     this.battleContext = {
-      teams: this.teams,
-      battleGains: battleGains
+      teams: this.teams
     };
 
-    const battleApi = BattleApi(this.battleContext);
-
-    this.battleTimer = setInterval(() => {
-      const member = this.getNextMember();
-
-      // console.log("Battle Turn", member.data.name);
-      // console.log("member", member);
-
-      if (member.teamIndex === 0) {
-        battleApi._setCurrentTeam(this.teams[0]);
-        battleApi._setOpponentTeam(this.teams[1]);
-      } else {
-        battleApi._setCurrentTeam(this.teams[1]);
-        battleApi._setOpponentTeam(this.teams[0]);
-      }
-
-      battleGains.addGainWithMod("dex", member, Math.sqrt(1));
-
-      battleApi._setCurrentCharacter(member);
-
-      const context = {
-        hero: member.clone(),
-        battleApi
-      };
-
-      // console.log(member.battleFunction);
-      member.battleFunction(context);
-
-      const postStateAction = this.checkState();
-
-      if (postStateAction) {
-        postStateAction();
-      }
-    }, 1000);
+    this.battleApi = BattleApi(this.battleContext);
+    this.battleTimer = setInterval(this.tick.bind(this), 1000);
   }
 
   stop(win: boolean) {
     LogActions.addText(":t:Battle Over:t:");
     clearTimeout(this.battleTimer);
 
-    this.addGains(win);
+    let exp = 0;
+    let totalLevels = 0;
+    for (const member of this.teams[1].members) {
+      exp = 1 + member.data.level * member.data.statsPotential;
+      totalLevels += member.data.level;
+    }
+
+    for (const member of this.teams[0].members) {
+      const character = this.originalMembers[member.data.id];
+      const characterExp = exp / this.teams[0].members.length;
+      character.addExp(exp);
+      LogActions.addExp(character.data.name, characterExp);
+    }
 
     if (this.onFinish) {
       this.onFinish(win);
     }
   }
 
-  addGains(win: boolean) {
-    for (const id in this.battleContext.battleGains.battleGains) {
-      const gains = this.battleContext.battleGains.battleGains[id];
-      const character = this.originalMembers[id];
+  tick() {
+    const member = this.getNextMember();
+    const battleApi = this.battleApi;
 
-      for (const stat in gains) {
-        // Modify gains based on a win or loss
-        gains[stat] = gains[stat] * (win ? 1 : 0.1);
-        character.data.statsBase[stat] += gains[stat];
-      }
+    // console.log("Battle Turn", member.data.name);
+    // console.log("member", member);
 
-      character.updateTotalStats();
+    if (member.teamIndex === 0) {
+      battleApi._setCurrentTeam(this.teams[0]);
+      battleApi._setOpponentTeam(this.teams[1]);
+    } else {
+      battleApi._setCurrentTeam(this.teams[1]);
+      battleApi._setOpponentTeam(this.teams[0]);
+    }
 
-      LogActions.addGains(gains, character);
+    battleApi._setCurrentCharacter(member);
+
+    const context = {
+      hero: member.clone(),
+      battleApi
+    };
+
+    // console.log(member.battleFunction);
+    member.battleFunction(context);
+
+    const postStateAction = this.checkState();
+
+    if (postStateAction) {
+      postStateAction();
     }
   }
 }

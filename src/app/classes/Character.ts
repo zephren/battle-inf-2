@@ -7,6 +7,7 @@ import { createStats, cloneStats, statCount } from "../interfaces/Stats";
 import { v4 as uuid } from "uuid";
 import ArrayExtra from "../lib/array-extra";
 import MathExtra from "../lib/math-extra";
+import Stats from "../components/Stats";
 
 const initialBattleActionCode = `const target = battle.targetOpponent();
 battle.attack(target);`;
@@ -17,7 +18,7 @@ const qualities = ["", "D", "C", "B", "A", "S", "SS", "SSS", "X"];
 export default class CCharacter {
   data: ICharacterData;
 
-  constructor(data: ICharacterData = null) {
+  constructor(data: ICharacterData = null, config: any = {}) {
     if (!data) {
       data = {
         id: uuid(),
@@ -35,12 +36,7 @@ export default class CCharacter {
         battlActionCode: ""
       };
 
-      data.statsBase.hp = 100;
-      data.statsBase.atk = 20;
-      data.statsBase.def = 10;
-      data.statsBase.dex = 10;
-
-      const growth = this.createGrowthRatio();
+      const growth = this.createGrowthRatio(config);
 
       data.statsGrowth = growth.stats;
       data.statsGrowthRatioMin = growth.ratioMin;
@@ -50,11 +46,13 @@ export default class CCharacter {
 
     this.data = data;
 
+    this.updateBaseStats();
     this.updateTotalStats();
   }
 
-  static createHero(initalData: any = null) {
-    const hero = new CCharacter(initalData);
+  static createHero(initalData: any = null, config: any = {}) {
+    console.log("createHero", config);
+    const hero = new CCharacter(initalData, config);
 
     const data = hero.data;
 
@@ -65,9 +63,12 @@ export default class CCharacter {
 
     const equipment = new CEquipment(data.equipment);
 
-    equipment.equip(createItem({ type: "head" }));
-    equipment.equip(createItem({ type: "body" }));
-    equipment.equip(createItem({ type: "legs" }));
+    equipment.equip(createItem({ type: "head", rarity: 0 }));
+    equipment.equip(createItem({ type: "body", rarity: 0 }));
+    equipment.equip(createItem({ type: "legs", rarity: 0 }));
+    equipment.equip(createItem({ type: "feet", rarity: 0 }));
+    equipment.equip(createItem({ type: "hands", rarity: 0 }));
+    equipment.equip(createItem({ type: "hand", rarity: 0 }));
 
     data.battlActionCode = initialBattleActionCode;
 
@@ -87,23 +88,53 @@ export default class CCharacter {
     return qualities[Math.ceil(ratio * (qualities.length - 1))];
   }
 
-  createGrowthRatio() {
+  /**
+   * This works, it's too late to explain how
+   *
+   * @param config
+   */
+  createGrowthRatio(config: any = {}) {
+    const factor = 3;
+    const magnitude = Math.pow(10, factor); // A lower value here means higher stats, 1000
+
     const stats = createStats();
     const statNames = Object.keys(stats);
+    let potentialMin = 0;
+    let potentialMax = 1;
+
+    if (config.potentialRange) {
+      if (config.potentialRange[0]) {
+        potentialMin = Math.pow(config.potentialRange[0], 1.0 / factor);
+        // potentialMin = config.potentialRange[0];
+      }
+
+      if (config.potentialRange[1]) {
+        potentialMax = Math.pow(config.potentialRange[1], 1.0 / factor);
+        // potentialMax = config.potentialRange[1];
+      }
+    }
 
     ArrayExtra.shuffleArray(statNames);
 
-    const factor = 3;
-    const magnitude = Math.pow(10, factor); // A lower value here means higher stats
-    const startMin = MathExtra.randomFloat(0, magnitude); // A lower value here means higher stats
+    let ratioMin = 0;
+    let ratioMax = 1;
 
-    const rMin = MathExtra.randomFloat(startMin, magnitude);
-    const ratioMin = 1 - Math.pow(rMin, 1 / factor) / 10;
+    const startMin = MathExtra.randomFloat(
+      (1 - potentialMax) * magnitude,
+      (1 - potentialMin) * magnitude
+    ); // A lower value here means higher stats, 0 to 1000
 
-    const rMax = MathExtra.randomFloat(0, rMin);
-    const ratioMax = 1 - Math.pow(rMax, 1 / factor) / 10;
+    const rMin = MathExtra.randomFloat(
+      startMin,
+      (1 - potentialMin) * magnitude
+    );
+    console.log({ startMin: startMin.toFixed(3), rMin: rMin.toFixed(3) });
+    ratioMin = 1 - Math.pow(rMin, 1 / factor) / 10;
 
-    // console.log({ rMin: rMin.toFixed(2), rMax: rMax.toFixed(2) });
+    const rMax = MathExtra.randomFloat((1 - potentialMax) * magnitude, rMin);
+    ratioMax = 1 - Math.pow(rMax, 1 / factor) / 10;
+
+    console.log({ rMin: rMin.toFixed(2), rMax: rMax.toFixed(2) });
 
     let potential = 0;
     for (const stat of statNames) {
@@ -119,6 +150,31 @@ export default class CCharacter {
       stats,
       potential
     };
+  }
+
+  createBaseStats() {
+    const stats = createStats();
+
+    stats.hp = 50;
+    stats.atk = 2;
+    stats.def = 1;
+    stats.dex = 1;
+
+    return stats;
+  }
+
+  updateBaseStats(mod: number = 1) {
+    const stats = this.createBaseStats();
+    const level = this.data.level;
+    const statsGrowth = this.data.statsGrowth;
+
+    for (const stat in stats) {
+      stats[stat] = Math.round(
+        stats[stat] * Math.pow(1 + level, 1 + statsGrowth[stat]) * mod
+      );
+    }
+
+    this.data.statsBase = stats;
   }
 
   updateTotalStats() {
@@ -153,5 +209,25 @@ export default class CCharacter {
     const equipment = this.getEquipment();
     const items = equipment.unequip(item);
     return items;
+  }
+
+  addExp(amount: number) {
+    let levelUp = false;
+    this.data.exp += amount;
+
+    while (this.data.exp > this.getExpForLevel(this.data.level)) {
+      this.data.exp -= this.getExpForLevel(this.data.level);
+      this.data.level++;
+      levelUp = true;
+    }
+
+    if (levelUp) {
+      this.updateBaseStats();
+      this.updateTotalStats();
+    }
+  }
+
+  getExpForLevel(level: number) {
+    return 20 + level * level * 10;
   }
 }

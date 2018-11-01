@@ -41,12 +41,12 @@ export default {
     });
   },
 
-  addGains: (gains: any, character: CCharacter) => {
+  addExp: (name: string, exp: number) => {
     addLogEntry({
-      type: "gains",
+      type: "exp",
       data: {
-        gains: gains,
-        character: character
+        name: name,
+        exp: exp
       }
     });
   }

@@ -1,8 +1,8 @@
-import EnemyClasses from "../enemy-classes";
+import Behaviros from "../enemy-behaviors";
 
 export default {
-  name: "Rat",
-  classes: [EnemyClasses.Normal],
+  name: "Normal",
+  behaviors: [Behaviros.JustAttack],
   statRatios: {
     hp: [0.1, 0.2],
     sp: [0.1, 0.2],

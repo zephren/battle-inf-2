@@ -4,18 +4,15 @@ import CCharacter from "../classes/Character";
 
 export default (): IState => {
   return {
-    heroes: [CCharacter.createHero()],
-    inventory: [
-      createItem(),
-      createItem(),
-      createItem(),
-      createItem({ type: "hand", subType: "sword" }),
-      createItem({ type: "hand", subType: "sword", rarity: 5 }),
-      createItem({
-        type: "hand",
-        subType: "twoHandedSword",
-        rarity: 4
+    heroes: [
+      CCharacter.createHero(null, {
+        potentialRange: [0.05, 0.1]
       })
+    ],
+    inventory: [
+      // createItem(),
+      // createItem({ type: "hand", subType: "sword" }),
+      // createItem({ type: "hand", subType: "sword", rarity: 5 }),
     ],
     properties: {
       inventorySize: 10
@@ -26,15 +23,18 @@ export default (): IState => {
       lastTick: Date.now(),
       buildings: {
         housing: {
-          quantity: 3,
+          size: 3,
+          quality: 1,
           data: {}
         },
         sawmill: {
-          quantity: 1,
+          size: 1,
+          quality: 1,
           data: {}
         },
         inn: {
-          quantity: 1,
+          size: 1,
+          quality: 1,
           data: {
             lastTick: Date.now()
           }

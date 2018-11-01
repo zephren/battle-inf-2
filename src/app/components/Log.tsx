@@ -4,7 +4,7 @@ import ILogEntry from "../interfaces/LogEntry";
 import Hero from "./Hero";
 import LogActions from "../actions/log-actions";
 import Button from "./controls/Button";
-import HeroGains from "./HeroGains";
+import LogBattleSummary from "./LogBattleSummary";
 
 export default class Main extends React.Component {
   messagesEnd: any = null;
@@ -58,6 +58,11 @@ export default class Main extends React.Component {
         `<b class="log-note"><table style="width:100%"><tbody><tr><td>$1</td><td class="color-green" style="text-align:right"><i class="fa fa-gift fa-2x"/></td></tr></tbody></table></b>`
       );
 
+      result = result.replace(
+        /:exp:(.*?):exp:/g,
+        `<b class="log-note"><table style="width:100%"><tbody><tr><td><b>$1</b></td><td class="color-green" style="text-align:right;font-size:20px;font-weight:bold">XP</td></tr></tbody></table></b>`
+      );
+
       return (
         <div
           key={index}
@@ -71,13 +76,33 @@ export default class Main extends React.Component {
       return <Hero key={index} hero={entry.data.character} options={[]} />;
     }
 
-    if (entry.type === "gains") {
+    if (entry.type === "exp") {
       return (
-        <HeroGains
-          key={index}
-          hero={entry.data.character}
-          gains={entry.data.gains}
-        />
+        <div className="entry" key={index}>
+          <b className="log-note">
+            <table style={{ width: "100%" }}>
+              <tbody>
+                <tr>
+                  <td>
+                    <b>{entry.data.name}</b>
+                    &nbsp;&nbsp;&nbsp;
+                    <b className="color-green">+{entry.data.exp.toFixed(2)}</b>
+                  </td>
+                  <td
+                    className="color-green"
+                    style={{
+                      textAlign: "right",
+                      fontSize: "20px",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    XP
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </b>
+        </div>
       );
     }
 
@@ -136,6 +161,7 @@ export default class Main extends React.Component {
         </div>
         <h1>Battle Log</h1>
         <div className="log-area" ref={el => (this.messageArea = el)}>
+          <LogBattleSummary />
           {this.renderLog()}
           <div
             style={{ marginTop: "50px" }}

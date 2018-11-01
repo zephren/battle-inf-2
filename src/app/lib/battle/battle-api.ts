@@ -1,6 +1,5 @@
 import CBattleCharacter from "../../classes/BattleCharacter";
 import CBattleTeam from "../../classes/BattleTeam";
-import CBattleGains from "../../classes/BattleGains";
 import MathExtra from "../math-extra";
 import LogActions from "../../actions/log-actions";
 import attack from "./attack";
@@ -18,12 +17,10 @@ export interface IBattleApi {
 
 export interface IBattleContext {
   teams: CBattleTeam[];
-  battleGains: CBattleGains;
 }
 
 export default (battleContext: IBattleContext) => {
   const teams = battleContext.teams;
-  const battleGains = battleContext.battleGains;
 
   let currentTeam: CBattleTeam = null;
   let opponentTeam: CBattleTeam = null;
@@ -65,27 +62,6 @@ export default (battleContext: IBattleContext) => {
         currentCharacterActed = true;
 
         const damage = attack(currentCharacter, target);
-
-        battleGains.addGainWithMod("hp", psudoTarget, Math.sqrt(damage));
-        battleGains.addGainWithCharacter(
-          "def",
-          psudoTarget,
-          "atk",
-          currentCharacter
-        );
-
-        battleGains.addGainWithCharacter(
-          "atk",
-          currentCharacter,
-          "def",
-          target
-        );
-        battleGains.addGainWithCharacter(
-          "dex",
-          currentCharacter,
-          "dex",
-          target
-        );
       } else {
         LogActions.addText(
           `:b:${currentCharacter.data.name}:b: has already acted...`

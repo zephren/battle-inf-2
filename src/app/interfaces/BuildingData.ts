@@ -1,5 +1,6 @@
 export default interface IBuildingData {
-  quantity: number;
+  size: number;
+  quality: number;
   data: {
     [key: string]: any;
   };

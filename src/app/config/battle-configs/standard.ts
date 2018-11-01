@@ -1,11 +1,9 @@
-import GameFunctions from "../../lib/game-functions";
 import GameActions from "../../actions/game-actions";
 import { createItem } from "../../interfaces/ItemData";
 import LogActions from "../../actions/log-actions";
 import CBattle from "../../classes/Battle";
 import CBattleTeam from "../../classes/BattleTeam";
 import CEnemy from "../../classes/Enemy";
-import justAttack from "../enemy-behaviors/just-attack";
 import MathExtra from "../../lib/math-extra";
 
 export default function(
@@ -15,10 +13,7 @@ export default function(
   return (options: any): CBattle => {
     const enemies: any[] = [];
 
-    const enemyCount = MathExtra.randomInt(
-      battleConfig.enemyCount[0],
-      battleConfig.enemyCount[1]
-    );
+    const enemyCount = MathExtra.randomIntFromArray(battleConfig.enemyCount);
 
     for (let i = 0; i < enemyCount; i++) {
       const enemyTypeIndex = MathExtra.randomInt(
@@ -27,7 +22,7 @@ export default function(
       );
       const enemyType = battleConfig.enemyTypes[enemyTypeIndex];
 
-      enemies.push(new CEnemy(enemyType, justAttack, battleConfig));
+      enemies.push(new CEnemy(enemyType, battleConfig));
     }
 
     //    enemies[0].data.name = "Monster 1A";

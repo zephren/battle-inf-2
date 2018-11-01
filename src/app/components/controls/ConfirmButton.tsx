@@ -25,6 +25,9 @@ class Button extends React.Component<Props, {}> {
 
   confirm(event: React.MouseEvent<HTMLElement>) {
     this.props.onConfirm(event);
+    this.setState({
+      confirming: false
+    });
   }
 
   cancel() {

@@ -1,6 +1,7 @@
 import Store from "../store";
 import map from "../config/map";
 import buildings from "../config/buildings";
+import IBuildingData from "../interfaces/BuildingData";
 
 const GameFunctions = {
   getHeroById: (id: string) => {
@@ -17,7 +18,7 @@ const GameFunctions = {
   },
 
   getMapLocationByName: (name: string) => {
-    for (const location of map.nodes) {
+    for (const location of map().nodes) {
       if (location.name === name) {
         return location;
       }
@@ -26,11 +27,28 @@ const GameFunctions = {
     return null;
   },
 
-  canAffordBuilding(buildingId: string, quantity: number) {
+  canAffordBuildingUpgrade(buildingId: string, buildingData: IBuildingData) {
     const state = Store.getState();
     const town = state.town;
     const building = buildings[buildingId];
-    const cost = building.cost(quantity);
+    const cost = building.upgradeCost(buildingData);
+
+    for (const resourceId in cost) {
+      const resourceCost = cost[resourceId];
+
+      if (town.resources[resourceId] < resourceCost) {
+        return false;
+      }
+    }
+
+    return true;
+  },
+
+  canAffordBuildingExpand(buildingId: string, buildingData: IBuildingData) {
+    const state = Store.getState();
+    const town = state.town;
+    const building = buildings[buildingId];
+    const cost = building.expandCost(buildingData);
 
     for (const resourceId in cost) {
       const resourceCost = cost[resourceId];
@@ -46,7 +64,7 @@ const GameFunctions = {
   getTownResidentSpace() {
     const state = Store.getState();
 
-    return state.town.buildings.housing.quantity - state.heroes.length;
+    return state.town.buildings.housing.size - state.heroes.length;
   },
 
   getTownJobAssignmentCount() {
@@ -105,7 +123,7 @@ const GameFunctions = {
     const heroes = state.heroes;
 
     return (
-      town.buildings.housing.quantity -
+      town.buildings.housing.size -
       (GameFunctions.getTownJobAssignmentCount() + heroes.length)
     );
   },

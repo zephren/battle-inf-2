@@ -1,23 +1,44 @@
 import Store from "../store";
 import GameFunctions from "../lib/game-functions";
 import jobs from "../config/jobs";
+import IBuildingData from "../interfaces/BuildingData";
+
+function setupBuilding(): IBuildingData {
+  return {
+    size: 0,
+    quality: 0,
+    data: {}
+  };
+}
+
+function getBuilding(town: any, buildingId: string): IBuildingData {
+  if (!town.buildings[buildingId]) {
+    town.buildings[buildingId] = setupBuilding();
+  }
+
+  return town.buildings[buildingId];
+}
 
 export default {
   upgradeBuilding: (buildingId: string) => {
     const town = Store.getState().town;
-    let building = town.buildings[buildingId];
+    const building = getBuilding(town, buildingId);
 
-    if (!building) {
-      building = {
-        quantity: 0,
-        data: {}
-      };
+    if (GameFunctions.canAffordBuildingUpgrade(buildingId, building)) {
+      building.quality += 1;
 
-      town.buildings[buildingId] = building;
+      Store.saveState();
     }
 
-    if (GameFunctions.canAffordBuilding(buildingId, building.quantity)) {
-      building.quantity += 1;
+    Store.update();
+  },
+
+  expandBuilding: (buildingId: string) => {
+    const town = Store.getState().town;
+    const building = getBuilding(town, buildingId);
+
+    if (GameFunctions.canAffordBuildingExpand(buildingId, building)) {
+      building.size += 1;
 
       Store.saveState();
     }

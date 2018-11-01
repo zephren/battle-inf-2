@@ -5,11 +5,12 @@ import TownActions from "../actions/town-actions";
 import resources from "../config/resources";
 import GameFunctions from "../lib/game-functions";
 import TownBuildings from "./town-buildings";
+import IBuildingData from "../interfaces/BuildingData";
 
 interface Props extends Partial<RouteComponentProps<{}>> {
   buildingId: string;
   buildingConfig: any;
-  buildingData: any;
+  buildingData: IBuildingData;
 }
 
 class TownBuilding extends React.Component<Props, {}> {
@@ -31,24 +32,37 @@ class TownBuilding extends React.Component<Props, {}> {
   render() {
     const buildingConfig = this.props.buildingConfig;
     const buildingData = this.props.buildingData;
-    let quantity = 0;
+    const buildingId = this.props.buildingId;
 
-    if (buildingData) {
-      quantity = buildingData.quantity;
+    if (!buildingData) {
+      return null;
     }
 
-    const costElements = [];
-    const cost = buildingConfig.cost(quantity);
-    for (const resource in cost) {
-      costElements.push(
+    const size = buildingData.size;
+    const quality = buildingData.quality;
+
+    const upgradeCostElements = [];
+    const upgradeCost = buildingConfig.upgradeCost(buildingData);
+    for (const resource in upgradeCost) {
+      upgradeCostElements.push(
         <div key={resource}>
-          {cost[resource]} {resources[resource].name}
+          {upgradeCost[resource]} {resources[resource].name}
+        </div>
+      );
+    }
+
+    const expandCostElements = [];
+    const expandCost = buildingConfig.expandCost(buildingData);
+    for (const resource in expandCost) {
+      expandCostElements.push(
+        <div key={resource}>
+          {expandCost[resource]} {resources[resource].name}
         </div>
       );
     }
 
     let visitButton = null;
-    if (TownBuildings[this.props.buildingId]) {
+    if (TownBuildings[buildingId]) {
       visitButton = (
         <div style={{ marginTop: "10px" }}>
           <Button onClick={this.visitBuilding}>Visit</Button>
@@ -62,22 +76,46 @@ class TownBuilding extends React.Component<Props, {}> {
           <Button
             onClick={this.upgrade}
             disabled={
-              !GameFunctions.canAffordBuilding(this.props.buildingId, quantity)
+              !GameFunctions.canAffordBuildingUpgrade(buildingId, buildingData)
             }
           >
             Upgrade
           </Button>
           <div style={{ fontSize: "12px", textAlign: "right" }}>
-            {costElements}
+            {upgradeCostElements}
+          </div>
+          <Button
+            onClick={this.upgrade}
+            disabled={
+              !GameFunctions.canAffordBuildingExpand(buildingId, buildingData)
+            }
+          >
+            Expand
+          </Button>
+          <div style={{ fontSize: "12px", textAlign: "right" }}>
+            {expandCostElements}
           </div>
         </div>
         <table>
           <tbody>
             <tr>
               <td>
-                <div className="quantity">
-                  <i className="fa fa-building" /> {quantity}
-                </div>
+                <table className="building-data">
+                  <tbody>
+                    <tr>
+                      <td style={{ textAlign: "center" }}>
+                        <i className="fa fa-building" />
+                      </td>
+                      <td>{size}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ textAlign: "center" }}>
+                        <i className="fa fa-star" />
+                      </td>
+                      <td>{quality}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </td>
               <td>
                 <div className="name">{buildingConfig.name}</div>
@@ -87,6 +125,8 @@ class TownBuilding extends React.Component<Props, {}> {
             </tr>
           </tbody>
         </table>
+
+        <div style={{ clear: "both" }} />
       </div>
     );
   }

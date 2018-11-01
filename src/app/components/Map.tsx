@@ -6,7 +6,6 @@ import Store from "../store";
 import { ForceGraph2D } from "react-force-graph";
 import { forceLink, forceCollide } from "d3-force";
 import map from "../config/map";
-import GameFunctions from "../lib/game-functions";
 
 export default class Map extends React.Component {
   state: {
@@ -93,11 +92,11 @@ export default class Map extends React.Component {
 
     const nodesByName: any = {};
 
-    for (const node of map.nodes) {
+    for (const node of map().nodes) {
       nodesByName[node.name] = node;
     }
 
-    for (const node of map.nodes) {
+    for (const node of map().nodes) {
       if (node.isAvailable()) {
         data.nodes.push({ id: node.name, val: 50 });
       }

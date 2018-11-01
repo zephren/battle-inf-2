@@ -4,9 +4,14 @@ export default {
   availableIf: () => {
     return true;
   },
-  cost: (level: number) => {
+  upgradeCost: (buildingData: any) => {
     return {
-      lumber: (level + 1) * 200
+      lumber: (buildingData.quality + 1) * 200
+    };
+  },
+  expandCost: (buildingData: any) => {
+    return {
+      lumber: (buildingData.size + 1) * 200
     };
   }
 };

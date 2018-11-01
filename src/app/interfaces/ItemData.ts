@@ -76,6 +76,10 @@ function determineSubType(
 
   const itemSubTypes = itemTypes[item.type];
 
+  if (!itemSubTypes) {
+    throw new Error("Invalid item type, " + item.type);
+  }
+
   const itemSubTypeStrings = Object.keys(itemSubTypes);
   const itemSubTypeIndex = MathExtra.randomInt(
     0,
@@ -91,7 +95,7 @@ function determineSlots(item: IItemData, properties: IItemCreationProperties) {
 }
 
 function determineRarity(item: IItemData, properties: IItemCreationProperties) {
-  if (properties.rarity) {
+  if (!isNaN(properties.rarity)) {
     item.rarity = properties.rarity;
     return;
   }
