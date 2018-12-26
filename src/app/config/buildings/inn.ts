@@ -20,7 +20,7 @@ export default {
   processTick: (town: any, building: any) => {
     const heroes = [];
 
-    for (let i = 0; i < building.quantity; i++) {
+    for (let i = 0; i < building.size; i++) {
       heroes.push(CCharacter.createHero());
     }
 

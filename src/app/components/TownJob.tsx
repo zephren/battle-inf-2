@@ -70,11 +70,24 @@ export default class TownJob extends React.Component<Props> {
             <i className="fa fa-minus" />
           </Button>
         </div>
-        <div className="quantity">
-          <i className="fa fa-user" /> {this.props.totalAssigned || 0}
+
+        <table className="job-data">
+          <tbody>
+            <tr>
+              <td style={{ textAlign: "center" }}>
+                <i className="fa fa-user" />
+              </td>
+              <td>{this.props.totalAssigned || 0}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style={{ float: "left" }}>
+          <div className="name">{job.name}</div>
+          <div className="description">{job.description}</div>
         </div>
-        <div className="name">{job.name}</div>
-        <div className="description">{job.description}</div>
+
+        <div style={{ clear: "both" }} />
       </div>
     );
   }

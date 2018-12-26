@@ -163,7 +163,6 @@ export default class CBattle {
     const battleApi = this.battleApi;
 
     // console.log("Battle Turn", member.data.name);
-    // console.log("member", member);
 
     if (member.teamIndex === 0) {
       battleApi._setCurrentTeam(this.teams[0]);

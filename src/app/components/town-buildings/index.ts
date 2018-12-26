@@ -1,4 +1,4 @@
-import inn from "./inn";
+import inn from "./Inn";
 
 const TownBuildings: {
   [key: string]: any;

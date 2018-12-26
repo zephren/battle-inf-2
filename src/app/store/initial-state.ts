@@ -14,9 +14,6 @@ export default (): IState => {
       // createItem({ type: "hand", subType: "sword" }),
       // createItem({ type: "hand", subType: "sword", rarity: 5 }),
     ],
-    properties: {
-      inventorySize: 10
-    },
     log: [],
     scrollLogToBottom: false,
     town: {
@@ -27,13 +24,20 @@ export default (): IState => {
           quality: 1,
           data: {}
         },
+        inn: {
+          size: 1,
+          quality: 1,
+          data: {
+            lastTick: Date.now()
+          }
+        },
         sawmill: {
           size: 1,
           quality: 1,
           data: {}
         },
-        inn: {
-          size: 1,
+        storage: {
+          size: 10,
           quality: 1,
           data: {
             lastTick: Date.now()

@@ -1,9 +1,13 @@
 import Store from "../store";
 import CCharacter from "../classes/Character";
+import ILogEntry from "../interfaces/LogEntry";
+import { v4 as uuid } from "uuid";
 
-function addLogEntry(entry: any) {
+function addLogEntry(entry: ILogEntry) {
   const state = Store.getState();
   const log = state.log;
+
+  entry.entryId = uuid();
 
   log.push(entry);
 

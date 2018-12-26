@@ -1,0 +1,68 @@
+.flipper-container {
+  perspective: 1000px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  &:hover {
+    z-index: 1;
+  }
+
+  .flipper {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+
+    .front {
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    .back {
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+
+  &.flip-horizontal {
+    &:hover .flipper {
+      transform: rotateY(180deg);
+    }
+
+    .front {
+      transform: rotateY(0deg);
+    }
+
+    .back {
+      transform: rotateY(180deg);
+    }
+  }
+
+  &.flip-vertical {
+    &:hover .flipper {
+      transform: rotateX(180deg);
+    }
+
+    .front {
+      transform: rotateX(0deg);
+    }
+
+    .back {
+      transform: rotateX(180deg);
+    }
+  }
+
+  &:hover .flipper.disabled {
+    transform: none;
+  }
+}

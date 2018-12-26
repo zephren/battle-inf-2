@@ -2,6 +2,7 @@ import * as React from "react";
 import CCharacter from "../classes/Character";
 import { withRouter, RouteComponentProps } from "react-router";
 import ConfirmButton from "./controls/ConfirmButton";
+import Flipper from "./controls/Flipper";
 import HeroActions from "../actions/hero-actions";
 
 import Stats from "./Stats";
@@ -13,6 +14,7 @@ interface Props extends Partial<RouteComponentProps<{}>> {
   hero: CCharacter;
   options?: any[];
   debug: boolean;
+  hideExp: boolean;
 }
 
 class Hero extends React.Component<Props, {}> {
@@ -105,14 +107,39 @@ class Hero extends React.Component<Props, {}> {
     }
 
     let debugDisplay = null;
-    if (true || this.props.debug) {
+    if (this.props.debug || true) {
       debugDisplay = (
         <div>
-          <div className="clear" />
-          <StatsGrowth stats={heroData.statsGrowth} />
-          <div>Potential {heroData.statsPotential}</div>
-          <div>Growth Min {heroData.statsGrowthRatioMin.toFixed(2)}</div>
-          <div>Growth Max {heroData.statsGrowthRatioMax.toFixed(2)}</div>
+          <div style={{ float: "left", marginRight: "10px" }}>
+            <StatsGrowth stats={heroData.statsGrowth} />
+          </div>
+          <div style={{ float: "left" }}>
+            <div>Potential {heroData.statsPotential}</div>
+            <div>Growth Min {heroData.statsGrowthRatioMin.toFixed(2)}</div>
+            <div>Growth Max {heroData.statsGrowthRatioMax.toFixed(2)}</div>
+          </div>
+        </div>
+      );
+    }
+
+    let exp = null;
+    if (!this.props.hideExp) {
+      exp = (
+        <div className="exp">
+          <div className="bar-outer">
+            <div
+              className="bar-inner"
+              style={{
+                width:
+                  (heroData.exp * 100) / hero.getExpForLevel(heroData.level) +
+                  "%"
+              }}
+            />
+          </div>
+          <div className="numbers" style={{ marginTop: "-22px" }}>
+            {heroData.exp.toFixed(2)} / {hero.getExpForLevel(heroData.level)}{" "}
+            EXP
+          </div>
         </div>
       );
     }
@@ -120,35 +147,41 @@ class Hero extends React.Component<Props, {}> {
     const quality = hero.getQuality();
 
     return (
-      <div className="hero">
-        <div className="hero-inner">
-          <div className={["variation", quality].join(" ")}>{quality}</div>
-          {options}
-          <div>
-            <span className="hero-name">{heroData.name}</span>
-            <span className="level">Lv. {heroData.level}</span>
-          </div>
-          <Stats stats={heroData.statsTotal} />
-          <div className="clear" />
-          <div className="exp">
-            <div className="bar-outer">
-              <div
-                className="bar-inner"
-                style={{
-                  width:
-                    (heroData.exp * 100) / hero.getExpForLevel(heroData.level) +
-                    "%"
-                }}
-              />
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100px",
+          marginBottom: "5px"
+        }}
+      >
+        <Flipper direction="vertical">
+          <Flipper.Front>
+            <div className="hero">
+              <div className="hero-inner">
+                <div className={["variation", quality].join(" ")}>
+                  {quality}
+                </div>
+                <div>
+                  <span className="hero-name">{heroData.name}</span>
+                  <span className="level">Lv. {heroData.level}</span>
+                </div>
+                <Stats stats={heroData.statsTotal} />
+                <div className="clear" />
+                {exp}
+              </div>
             </div>
-            <div className="numbers">
-              {heroData.exp.toFixed(2)} / {hero.getExpForLevel(heroData.level)}{" "}
-              EXP
+          </Flipper.Front>
+          <Flipper.Back>
+            <div className="hero">
+              <div className="hero-inner">
+                {options}
+                {debugDisplay}
+                <div className="clear" />
+              </div>
             </div>
-          </div>
-          {debugDisplay}
-          <div className="clear" />
-        </div>
+          </Flipper.Back>
+        </Flipper>
       </div>
     );
   }

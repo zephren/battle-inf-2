@@ -4,12 +4,12 @@ import LogActions from "./log-actions";
 import ItemActions from "./item-actions";
 import CCharacter from "../classes/Character";
 import GameFunctions from "../lib/game-functions";
+import Values from "../config/values";
 
 const GameActions = {
   addItemToInventory: (item: IItemData, force: boolean = false) => {
     const state = Store.getState();
     const inventory = state.inventory;
-    const properties = state.properties;
     const heroes = state.heroes;
 
     const getHero = (index: number) => {
@@ -22,7 +22,7 @@ const GameActions = {
       ItemActions.equip.action(hero, item);
     };
 
-    if (inventory.length < properties.inventorySize || force) {
+    if (inventory.length < Values.inventorySize() || force) {
       state.inventory.push(item);
 
       let itemFunction = (item: any): number => {
@@ -38,6 +38,8 @@ const GameActions = {
           ${state.newItemActionCode}
         }
       `);
+
+      itemFunction(item);
 
       Store.saveState();
 

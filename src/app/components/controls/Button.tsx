@@ -5,6 +5,7 @@ interface Props {
   selected?: boolean;
   notify?: boolean;
   disabled?: boolean;
+  style?: any;
 }
 
 class Button extends React.Component<Props, {}> {
@@ -36,7 +37,11 @@ class Button extends React.Component<Props, {}> {
     }
 
     return (
-      <button className={className.join(" ")} onClick={this.click}>
+      <button
+        className={className.join(" ")}
+        style={this.props.style}
+        onClick={this.click}
+      >
         {this.props.children}
       </button>
     );

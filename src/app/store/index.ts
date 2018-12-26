@@ -8,6 +8,70 @@ let topLevelComponent: React.Component = null;
 let state: IState = {};
 let store: Store = null;
 
+function initializeState(initialState: IState) {
+  // Immediately save the state
+  localStorage.setItem("saveState", JSON.stringify(initialState));
+
+  // Call again to fully setup the new state
+  setupState();
+}
+
+function loadState(initialState: IState, existingState: IState) {
+  // Load an existing game
+  const heroes = [];
+
+  // Heroes
+  if (!existingState.heroes) {
+    existingState.heroes = initialState.heroes;
+  }
+
+  for (const heroData of existingState.heroes) {
+    const hero = new CCharacter(heroData.data);
+
+    hero.updateTotalStats();
+
+    heroes.push(hero);
+  }
+
+  // Log records
+  for (const record of existingState.log) {
+    if (record.type === "character") {
+      record.data.character = new CCharacter(record.data.character.data);
+    }
+  }
+
+  const properties = existingState.properties || <IProperties>{};
+
+  const newState = {
+    heroes: heroes,
+    inventory: existingState.inventory || initialState.inventory,
+    log: existingState.log || initialState.log,
+    town: existingState.town || initialState.town,
+    properties: properties,
+    newItemActionCode: existingState.newItemActionCode,
+    currentLocation: existingState.currentLocation || "Town",
+    mapState: existingState.mapState || {}
+  };
+
+  const innData = newState.town.buildings.inn.data;
+
+  if (innData.heroes) {
+    const innHeroes: CCharacter[] = [];
+
+    for (const heroData of innData.heroes) {
+      const hero = new CCharacter(heroData.data);
+
+      hero.updateTotalStats();
+
+      innHeroes.push(hero);
+    }
+
+    innData.heroes = innHeroes;
+  }
+
+  store.setFullState(newState);
+}
+
 /**
  * This either sets up the state from localStorage or initializes a new state
  *
@@ -18,66 +82,9 @@ export function setupState(reset = false) {
   const initialState = createInitialState();
 
   if (!existingState || reset) {
-    // Immediately save the state
-    localStorage.setItem("saveState", JSON.stringify(initialState));
-
-    // Call again to fully setup the new state
-    setupState();
+    initializeState(initialState);
   } else if (existingState) {
-    // Load an existing game
-    const heroes = [];
-
-    if (!existingState.heroes) {
-      existingState.heroes = initialState.heroes;
-    }
-
-    for (const heroData of existingState.heroes) {
-      const hero = new CCharacter(heroData.data);
-
-      hero.updateTotalStats();
-
-      heroes.push(hero);
-    }
-
-    for (const record of existingState.log) {
-      if (record.type === "character") {
-        record.data.character = new CCharacter(record.data.character.data);
-      }
-    }
-
-    const properties = existingState.properties || <IProperties>{};
-
-    properties.inventorySize =
-      properties.inventorySize || initialState.properties.inventorySize;
-
-    const newState = {
-      heroes: heroes,
-      inventory: existingState.inventory || initialState.inventory,
-      log: existingState.log || initialState.log,
-      town: existingState.town || initialState.town,
-      properties: properties,
-      newItemActionCode: existingState.newItemActionCode,
-      currentLocation: existingState.currentLocation || "Town",
-      mapState: existingState.mapState || {}
-    };
-
-    const innData = newState.town.buildings.inn.data;
-
-    if (innData.heroes) {
-      const innHeroes: CCharacter[] = [];
-
-      for (const heroData of innData.heroes) {
-        const hero = new CCharacter(heroData.data);
-
-        hero.updateTotalStats();
-
-        innHeroes.push(hero);
-      }
-
-      innData.heroes = innHeroes;
-    }
-
-    store.setFullState(newState);
+    loadState(initialState, existingState);
   }
 }
 
@@ -118,9 +125,11 @@ if (!state.log) {
   state.log = [];
 }
 
+const w = <any>window;
+
 // Best way to set a property on the window
-(<any>window).store = store;
-(<any>window).state = state;
-(<any>window).setupState = setupState;
+w.store = store;
+w.state = state;
+w.setupState = setupState;
 
 export default store;

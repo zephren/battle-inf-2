@@ -7,7 +7,7 @@
 
   .log-area {
     position: absolute;
-    top: 50px;
+    top: 0px;
     bottom: 0px;
     left: 0px;
     right: 0px;
@@ -38,10 +38,34 @@
         border-bottom: 2px solid #222;
       }
     }
+  }
 
+  .battle-summary-container {
     .battle-summary {
-      position: fixed;
-      top: 0px;
+      background: #444;
+      width: 100%;
+      border-bottom: 2px solid #222;
+
+      .member-name {
+        font-weight: bold;
+      }
+
+      .health {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        border-bottom: 2px solid #222;
+
+        .health-bar {
+          height: 5px;
+          background: $red;
+        }
+      }
     }
+  }
+}
+
+.animations {
+  .health-bar {
+    transition: width 1s linear;
   }
 }

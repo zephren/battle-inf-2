@@ -5,6 +5,7 @@ import Store, { setupState } from "../store";
 import battleInit from "../lib/battle/battle-init";
 import gameFunctions from "../lib/game-functions";
 import { withRouter, RouteComponentProps } from "react-router";
+import Values from "../config/values";
 
 interface Props extends Partial<RouteComponentProps<{}>> {}
 
@@ -20,8 +21,8 @@ const options = [
     name: () => {
       const state = Store.getState();
       const inventory = state.inventory;
-      const properties = state.properties;
-      return `Inventory (${inventory.length} / ${properties.inventorySize})`;
+
+      return `Inventory (${inventory.length} / ${Values.inventorySize()})`;
     },
     id: "inventory",
     onClick: function(props: Props) {
@@ -50,17 +51,10 @@ const options = [
     }
   },
   {
-    name: "Reset",
-    confirm: true,
-    onClick: function() {
-      setupState(true);
-      Store.update();
-    }
-  },
-  {
     name: "Save",
     onClick: function() {
       Store.saveState();
+      alert("Saved!");
     }
   }
 ];
@@ -177,26 +171,15 @@ class Header extends React.Component<Props, {}> {
       const name =
         typeof option.name === "function" ? option.name() : option.name;
 
-      if (option.confirm) {
-        headerElements.push(
-          <ConfirmButton
-            key={i}
-            onConfirm={option.onClick.bind(this, this.props)}
-          >
-            {name}
-          </ConfirmButton>
-        );
-      } else {
-        headerElements.push(
-          <Button
-            key={i}
-            selected={selected}
-            onClick={option.onClick.bind(this, this.props)}
-          >
-            {name}
-          </Button>
-        );
-      }
+      headerElements.push(
+        <Button
+          key={i}
+          selected={selected}
+          onClick={option.onClick.bind(this, this.props)}
+        >
+          {name}
+        </Button>
+      );
     }
 
     return (

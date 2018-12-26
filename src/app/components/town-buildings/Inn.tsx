@@ -42,7 +42,9 @@ export default class Inn extends React.Component<Props> {
         </div>
 
         <h1>Inn</h1>
-        <div>Unused housing: {GameFunctions.townUnusedHousingCount()}</div>
+        <div style={{ marginBottom: "10px" }}>
+          Unused housing: {GameFunctions.townUnusedHousingCount()}
+        </div>
         {heroElements}
       </div>
     );

@@ -51,7 +51,6 @@ export default class CCharacter {
   }
 
   static createHero(initalData: any = null, config: any = {}) {
-    console.log("createHero", config);
     const hero = new CCharacter(initalData, config);
 
     const data = hero.data;
@@ -128,13 +127,11 @@ export default class CCharacter {
       startMin,
       (1 - potentialMin) * magnitude
     );
-    console.log({ startMin: startMin.toFixed(3), rMin: rMin.toFixed(3) });
+
     ratioMin = 1 - Math.pow(rMin, 1 / factor) / 10;
 
     const rMax = MathExtra.randomFloat((1 - potentialMax) * magnitude, rMin);
     ratioMax = 1 - Math.pow(rMax, 1 / factor) / 10;
-
-    console.log({ rMin: rMin.toFixed(2), rMax: rMax.toFixed(2) });
 
     let potential = 0;
     for (const stat of statNames) {

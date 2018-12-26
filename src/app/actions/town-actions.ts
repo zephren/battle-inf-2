@@ -1,6 +1,7 @@
 import Store from "../store";
 import GameFunctions from "../lib/game-functions";
 import jobs from "../config/jobs";
+import buildings from "../config/buildings";
 import IBuildingData from "../interfaces/BuildingData";
 
 function setupBuilding(): IBuildingData {
@@ -19,13 +20,24 @@ function getBuilding(town: any, buildingId: string): IBuildingData {
   return town.buildings[buildingId];
 }
 
+function removeTownResources(town: any, cost: any) {
+  for (const resourceId in cost) {
+    const resourceCost = cost[resourceId];
+
+    town.resources[resourceId] -= resourceCost;
+  }
+}
+
 export default {
   upgradeBuilding: (buildingId: string) => {
     const town = Store.getState().town;
-    const building = getBuilding(town, buildingId);
+    const building = buildings[buildingId];
+    const buildingData = getBuilding(town, buildingId);
 
-    if (GameFunctions.canAffordBuildingUpgrade(buildingId, building)) {
-      building.quality += 1;
+    if (GameFunctions.canAffordBuildingUpgrade(buildingId, buildingData)) {
+      buildingData.quality += 1;
+
+      removeTownResources(town, building.upgradeCost(buildingData));
 
       Store.saveState();
     }
@@ -35,10 +47,13 @@ export default {
 
   expandBuilding: (buildingId: string) => {
     const town = Store.getState().town;
-    const building = getBuilding(town, buildingId);
+    const building = buildings[buildingId];
+    const buildingData = getBuilding(town, buildingId);
 
-    if (GameFunctions.canAffordBuildingExpand(buildingId, building)) {
-      building.size += 1;
+    if (GameFunctions.canAffordBuildingExpand(buildingId, buildingData)) {
+      buildingData.size += 1;
+
+      removeTownResources(town, building.expandCost(buildingData));
 
       Store.saveState();
     }

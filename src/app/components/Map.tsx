@@ -30,14 +30,12 @@ export default class Map extends React.Component {
     if (this.state.currentLocation !== state.currentLocation) {
       this.state.currentLocation = state.currentLocation;
       this.state.graphData = newNodesLinks;
-      console.log("MAP UPDATE 1");
       return true;
     }
 
     // console.log(this.state.graphData, newNodesLinks);
     if (this.state.graphData.nodes.length !== newNodesLinks.nodes.length) {
       this.state.graphData = newNodesLinks;
-      console.log("MAP UPDATE 2");
       return true;
     }
 
@@ -51,7 +49,7 @@ export default class Map extends React.Component {
       });
 
       // Location of the nodes and their data
-      console.log(this.fg.props.graphData.nodes);
+      // console.log(this.fg.props.graphData.nodes);
 
       // Control link distance
       this.fg.d3Force(
@@ -158,7 +156,7 @@ export default class Map extends React.Component {
 
             if (state.currentLocation === id) {
               ctx.lineWidth = 2;
-              ctx.strokeStyle = "green";
+              ctx.strokeStyle = "#ff6d80";
               ctx.strokeRect(x - 10, y - 10, 20, 20);
             }
 

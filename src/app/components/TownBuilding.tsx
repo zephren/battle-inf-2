@@ -6,6 +6,7 @@ import resources from "../config/resources";
 import GameFunctions from "../lib/game-functions";
 import TownBuildings from "./town-buildings";
 import IBuildingData from "../interfaces/BuildingData";
+import Flipper from "./controls/Flipper";
 
 interface Props extends Partial<RouteComponentProps<{}>> {
   buildingId: string;
@@ -18,11 +19,16 @@ class TownBuilding extends React.Component<Props, {}> {
     super(props);
 
     this.upgrade = this.upgrade.bind(this);
+    this.expand = this.expand.bind(this);
     this.visitBuilding = this.visitBuilding.bind(this);
   }
 
   upgrade() {
     TownActions.upgradeBuilding(this.props.buildingId);
+  }
+
+  expand() {
+    TownActions.expandBuilding(this.props.buildingId);
   }
 
   visitBuilding() {
@@ -46,7 +52,7 @@ class TownBuilding extends React.Component<Props, {}> {
     for (const resource in upgradeCost) {
       upgradeCostElements.push(
         <div key={resource}>
-          {upgradeCost[resource]} {resources[resource].name}
+          <b>{upgradeCost[resource]}</b> {resources[resource].name}
         </div>
       );
     }
@@ -56,46 +62,18 @@ class TownBuilding extends React.Component<Props, {}> {
     for (const resource in expandCost) {
       expandCostElements.push(
         <div key={resource}>
-          {expandCost[resource]} {resources[resource].name}
+          <b>{expandCost[resource]}</b> {resources[resource].name}
         </div>
       );
     }
 
     let visitButton = null;
     if (TownBuildings[buildingId]) {
-      visitButton = (
-        <div style={{ marginTop: "10px" }}>
-          <Button onClick={this.visitBuilding}>Visit</Button>
-        </div>
-      );
+      visitButton = <Button onClick={this.visitBuilding}>Visit</Button>;
     }
 
-    return (
+    const buildingFront = (
       <div className="building">
-        <div style={{ float: "right" }}>
-          <Button
-            onClick={this.upgrade}
-            disabled={
-              !GameFunctions.canAffordBuildingUpgrade(buildingId, buildingData)
-            }
-          >
-            Upgrade
-          </Button>
-          <div style={{ fontSize: "12px", textAlign: "right" }}>
-            {upgradeCostElements}
-          </div>
-          <Button
-            onClick={this.upgrade}
-            disabled={
-              !GameFunctions.canAffordBuildingExpand(buildingId, buildingData)
-            }
-          >
-            Expand
-          </Button>
-          <div style={{ fontSize: "12px", textAlign: "right" }}>
-            {expandCostElements}
-          </div>
-        </div>
         <table>
           <tbody>
             <tr>
@@ -120,13 +98,60 @@ class TownBuilding extends React.Component<Props, {}> {
               <td>
                 <div className="name">{buildingConfig.name}</div>
                 <div className="description">{buildingConfig.description}</div>
-                {visitButton}
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    );
+
+    const buildingBack = (
+      <div className="building">
+        <div style={{ float: "left", marginRight: "10px" }}>
+          <div style={{ fontSize: "12px" }}>{upgradeCostElements}</div>
+        </div>
+        <Button
+          style={{ float: "left", marginRight: "50px" }}
+          onClick={this.upgrade}
+          disabled={
+            !GameFunctions.canAffordBuildingUpgrade(buildingId, buildingData)
+          }
+        >
+          Upgrade
+        </Button>
+
+        <div style={{ float: "left", marginRight: "10px" }}>
+          <div style={{ fontSize: "12px" }}>{expandCostElements}</div>
+        </div>
+        <Button
+          style={{ float: "left" }}
+          onClick={this.expand}
+          disabled={
+            !GameFunctions.canAffordBuildingExpand(buildingId, buildingData)
+          }
+        >
+          Expand
+        </Button>
+
+        <div style={{ float: "right" }}>{visitButton}</div>
 
         <div style={{ clear: "both" }} />
+      </div>
+    );
+
+    return (
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100px",
+          marginBottom: "5px"
+        }}
+      >
+        <Flipper direction="vertical">
+          <Flipper.Front>{buildingFront}</Flipper.Front>
+          <Flipper.Back>{buildingBack}</Flipper.Back>
+        </Flipper>
       </div>
     );
   }

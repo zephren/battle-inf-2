@@ -2,8 +2,8 @@
   .building {
     background: #444;
     border-bottom: 2px solid #222;
-    margin-bottom: 5px;
     padding: 5px;
+    height: 88px;
 
     table td {
       vertical-align: top;
@@ -12,7 +12,6 @@
     .building-data {
       float: left;
       width: 50px;
-      height: 50px;
 
       .fa-building,
       .fa-star {
@@ -36,10 +35,13 @@
     margin-bottom: 5px;
     padding: 5px;
 
-    .quantity {
+    .job-data {
       float: left;
       width: 50px;
-      height: 50px;
+
+      .fa-user {
+        opacity: 0.5;
+      }
     }
 
     .name {

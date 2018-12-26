@@ -69,7 +69,7 @@ export class Main extends React.Component {
   render() {
     return (
       <Router>
-        <div>
+        <div className="animations">
           <Log />
           <div className="main">
             <Header />
